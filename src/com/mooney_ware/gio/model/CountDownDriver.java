@@ -159,7 +159,7 @@ public class CountDownDriver {
      * 
      * @param listener
      */
-    public void registerObserver(CountdownListener listener) {
+    public void registerListener(CountdownListener listener) {
         this.mCountdownListener = listener;
     }
 
