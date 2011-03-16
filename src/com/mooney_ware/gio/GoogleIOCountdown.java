@@ -56,14 +56,14 @@ public class GoogleIOCountdown extends Activity {
      */
     private Time getCountdownTargetDate() {
 
-        Time time = new Time();
+        Time time = new Time("PST");
 
         int year = 2011;
-        int month = Calendar.MARCH;
-        int dayOfMonth = 18;
+        int month = Calendar.MAY;
+        int dayOfMonth = 9;
 
         int hourOfDay = 9;
-        int minute = 10;
+        int minute = 0;
         int second = 0;
 
         time.set(second, minute, hourOfDay, dayOfMonth, month, year);
