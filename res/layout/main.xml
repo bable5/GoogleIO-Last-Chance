@@ -6,7 +6,7 @@
     >
 
 <view android:id="@+id/countdown_view"
-        class="com.mooney_ware.gio.view.TextCountdown"
+        class="com.mooney_ware.gio.view.BouncingBallsCountdown"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
     />
