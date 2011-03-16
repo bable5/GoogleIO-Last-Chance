@@ -142,6 +142,25 @@ public class CountDownDriver {
             int seconds) {
         int[] normalValues = new int[4];
 
+        final int SEC_PER_MIN = 60;
+        final int MIN_PER_HOUR = 60;
+        final int HOUR_PER_DAY = 24;
+
+        if (seconds < 0) {
+            seconds += SEC_PER_MIN;
+            minutes--;
+        }
+
+        if (minutes < 0) {
+            minutes += MIN_PER_HOUR;
+            hours--;
+        }
+
+        if (hours < 0) {
+            hours += HOUR_PER_DAY;
+            days--;
+        }
+
         // FIXME:
         normalValues[0] = days;
         normalValues[1] = hours;
