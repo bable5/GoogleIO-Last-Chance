@@ -18,6 +18,9 @@
  */
 package com.mooney_ware.gio.model;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
+import android.os.Handler;
 import android.text.format.Time;
 
 /**
@@ -35,6 +38,25 @@ public class CountDownDriver {
      */
     private Time mTarget;
 
+    private final Handler mTickHandler = new Handler();
+    private final Runnable mTickRunner = new Runnable() {
+        @Override
+        public void run() {
+            tick();
+        }
+    };
+
+    /**
+     * An object to synchronize one when scheduling the mTickRunner();
+     */
+    private final Object tickLock = new Object();
+
+    /**
+     * Even though single accesses are atomic, multiple accesses are not.
+     * Synchronize a if read/flip state type access with the {@link #tickLock};
+     */
+    private AtomicBoolean mIsTicking = new AtomicBoolean(false);
+
     /**
      * The observer to display the countdown state. If the need arises, this
      * could always be a list of observers.
@@ -51,14 +73,24 @@ public class CountDownDriver {
      * Start the system ticking.
      */
     public void start() {
-
+        synchronized (tickLock) {
+            if (!mIsTicking.get()) {
+                mIsTicking.set(true);
+                mTickHandler.post(mTickRunner);
+            }
+        }
     }
 
     /**
      * Stop the system from ticking.
      */
     public void stop() {
-
+        synchronized (tickLock) {
+            if (mIsTicking.get()) {
+                mIsTicking.set(false);
+                mTickHandler.removeCallbacks(mTickRunner);
+            }
+        }
     }
 
     void tick() {
@@ -84,6 +116,14 @@ public class CountDownDriver {
                     diffMinutes, diffSeconds);
 
             notifyListeners(normDiff[0], normDiff[1], normDiff[2], normDiff[3]);
+
+            synchronized (tickLock) {
+                if (mIsTicking.get()) {
+                    // TODO: Tick on exact seconds. This could be off
+                    // by almost a second.
+                    mTickHandler.postDelayed(mTickRunner, 1000);
+                }
+            }
         }
     }
 
