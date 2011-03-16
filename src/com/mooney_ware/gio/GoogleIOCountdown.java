@@ -16,14 +16,60 @@
 
 package com.mooney_ware.gio;
 
+import java.util.Calendar;
+
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.format.Time;
+import android.util.Log;
+
+import com.mooney_ware.gio.model.CountDownDriver;
+import com.mooney_ware.gio.view.AbstractCountdownView;
 
 public class GoogleIOCountdown extends Activity {
+
+    public static final String TAG = "GIO";
+
+    private CountDownDriver mCountDownDriver = null;
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        AbstractCountdownView cdview = (AbstractCountdownView) findViewById(R.id.countdown_view);
+
+        if (mCountDownDriver == null) {
+            Time targetTime = getCountdownTargetDate();
+            mCountDownDriver = new CountDownDriver(targetTime);
+            mCountDownDriver.registerListener(cdview);
+            mCountDownDriver.start();
+        }
+
+    }
+
+    /**
+     * Returns the date to countdown towards.
+     * 
+     * @return
+     */
+    private Time getCountdownTargetDate() {
+
+        Time time = new Time();
+
+        int year = 2011;
+        int month = Calendar.MARCH;
+        int dayOfMonth = 18;
+
+        int hourOfDay = 9;
+        int minute = 10;
+        int second = 0;
+
+        time.set(second, minute, hourOfDay, dayOfMonth, month, year);
+        time.normalize(false);
+
+        Log.i(TAG, "Target time: " + time.toString());
+        return time;
     }
 }
