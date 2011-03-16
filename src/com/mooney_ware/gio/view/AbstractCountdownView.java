@@ -28,6 +28,8 @@ import com.mooney_ware.gio.model.CountdownListener;
  * A an abstract countdown view, for the common pieces of the countdown - namely
  * storing the current countdown status.
  * 
+ * Subclass should implement draw to show the state correctly.
+ *
  * @author Sean Mooney
  * 
  */
@@ -43,7 +45,7 @@ public abstract class AbstractCountdownView extends View implements
     public AbstractCountdownView(Context context, AttributeSet attributes) {
         super(context, attributes);
     }
-
+    
     /**
      * Set the internal tick state and invalidate, to force a redraw.
      */
