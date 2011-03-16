@@ -119,9 +119,16 @@ public class CountDownDriver {
 
             synchronized (tickLock) {
                 if (mIsTicking.get()) {
+                    
+
+                    // long postBackExactly = 0;
+                    //
+                    // Calendar moment = Calendar.getInstance();
+
                     // TODO: Tick on exact seconds. This could be off
-                    // by almost a second.
-                    mTickHandler.postDelayed(mTickRunner, 1000);
+                    // by almost a second. Not quite, as much, since
+                    // ticking more often, but still wrong.
+                    mTickHandler.postDelayed(mTickRunner, 100);
                 }
             }
         }
