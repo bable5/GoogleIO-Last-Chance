@@ -97,6 +97,7 @@ public class TextCountdown extends AbstractCountdownView {
         paint = new Paint();
         paint.setColor(Color.BLACK);
         paint.setTypeface(Typeface.SERIF);
+        paint.setTextSize(30);
         return paint;
     }
 
