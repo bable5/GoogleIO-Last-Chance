@@ -23,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.util.AttributeSet;
 
 /**
  * A simple text based countdown display.
@@ -32,7 +33,7 @@ import android.graphics.Typeface;
  */
 public class TextCountdown extends AbstractCountdownView {
 
-    private Paint mPaint;
+    private final Paint mPaint = createTextPaint();
     private static final int BG_COLOR = Color.WHITE;
 
     /**
@@ -41,9 +42,11 @@ public class TextCountdown extends AbstractCountdownView {
     public TextCountdown(Context context) {
         super(context);
 
-        mPaint = new Paint();
-        mPaint.setColor(Color.BLACK);
-        mPaint.setTypeface(Typeface.SERIF);
+
+    }
+
+    public TextCountdown(Context context, AttributeSet attributes) {
+        super(context, attributes);
     }
 
     /*
@@ -82,6 +85,19 @@ public class TextCountdown extends AbstractCountdownView {
         sb.append(SEP);
 
         return sb.toString();
+    }
+
+    /**
+     * Instantiate a paint object for drawing text.
+     * 
+     * @return
+     */
+    private Paint createTextPaint() {
+        Paint paint;
+        paint = new Paint();
+        paint.setColor(Color.BLACK);
+        paint.setTypeface(Typeface.SERIF);
+        return paint;
     }
 
 }

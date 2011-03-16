@@ -19,6 +19,7 @@
 package com.mooney_ware.gio.view;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.view.View;
 
 import com.mooney_ware.gio.model.CountdownListener;
@@ -37,6 +38,10 @@ public abstract class AbstractCountdownView extends View implements
 
     public AbstractCountdownView(Context context) {
         super(context);
+    }
+
+    public AbstractCountdownView(Context context, AttributeSet attributes) {
+        super(context, attributes);
     }
 
     /**
