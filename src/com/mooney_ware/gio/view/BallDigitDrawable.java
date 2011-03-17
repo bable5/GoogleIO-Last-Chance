@@ -38,6 +38,12 @@ public class BallDigitDrawable extends Drawable{
 
     private int value;
 
+    private static final int CELLS_ACCROSS = 4;
+    private static final int CELLS_DOWN = 7;
+    
+    private int radius = 5;
+    private int dotPadding = 2;
+    
     /**
      * Set the value this display should display.
      * @param v
@@ -63,6 +69,24 @@ public class BallDigitDrawable extends Drawable{
         Log.i("BallDisplay", "Bounds " + bounds);
     }
     
+    
+    
+    /* (non-Javadoc)
+     * @see android.graphics.drawable.Drawable#getIntrinsicHeight()
+     */
+    @Override
+    public int getIntrinsicHeight() {
+        return (CELLS_DOWN * 2 * radius) + (CELLS_DOWN - 1 * dotPadding);
+    }
+
+    /* (non-Javadoc)
+     * @see android.graphics.drawable.Drawable#getIntrinsicWidth()
+     */
+    @Override
+    public int getIntrinsicWidth() {
+        return (CELLS_ACCROSS * 2 * radius) + (CELLS_ACCROSS - 1 * dotPadding);
+    }
+
     /* (non-Javadoc)
      * @see android.graphics.drawable.Drawable#draw(android.graphics.Canvas)
      */
@@ -74,21 +98,26 @@ public class BallDigitDrawable extends Drawable{
         Rect bounds = this.bounds;
         if(bounds == null) bounds = getBounds();
 
+        Paint p = new Paint();
+        p.setColor(Color.GREEN);
+        
+        canvas.drawRect(bounds, p);
+        
         //bounds = new Rect(25, 25, 300, 300);
         
         //TODO: Elim redudancy
         int curX = bounds.left, curY = bounds.top;
         int radius = 3; //bounds.width() / WIDTH;
-        if(radius < 2){
-            radius = 2;
-        }
+//        if(radius < 2){
+//            radius = 2;
+//        }
         
         int diameter = 2 * radius;
         int xPad =  diameter + 2; //bounds.width() / ( WIDTH * ( diameter ) );
         int yPad = diameter + 2; //bounds.height() / ( WIDTH * ( diameter ) );
         int xStart = curX;
         
-        Paint p = new Paint();
+        
 
         int consummableMask = SHAPE_DESC[value];
         Log.i(GoogleIOCountdown.TAG, "Drawing " + value + " at " + bounds);

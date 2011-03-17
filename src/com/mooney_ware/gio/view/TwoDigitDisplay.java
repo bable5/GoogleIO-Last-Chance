@@ -21,6 +21,7 @@ package com.mooney_ware.gio.view;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
@@ -29,7 +30,7 @@ import android.view.View;
  * @author Sean Mooney
  *
  */
-public class TwoDigitDisplay extends View{
+public class TwoDigitDisplay extends View implements DigitDisplay{
 
     BallDigitDrawable[] mDigits;
     int mNumPlaces;
@@ -68,9 +69,11 @@ public class TwoDigitDisplay extends View{
             digits[i] = new BallDigitDrawable();
             dMask[i] = (int)Math.pow(BASE, i);
         }
-        
-        digits[0].setBounds(new Rect(60, 10, 50, 200));
-        digits[1].setBounds(new Rect(10, 10, 50, 200));
+//        
+//        digits[0].setBounds(new Rect(60, 10, 50, 200));
+//        digits[1].setBounds(new Rect(10, 10, 50, 200));
+//        
+        setValue(0);
     }
     
     
@@ -81,27 +84,37 @@ public class TwoDigitDisplay extends View{
      */
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-//        super.onSizeChanged(w, h, oldw, oldh);
-//
-//        BallDigitDrawable[] digits = mDigits;
-//       
-//        int cellWidth = w / mNumPlaces;
-//        
-//        int n = digits.length - 1;
-//        int x = 10;
-//        int topY = getPaddingTop();
-//        int newHeight = h - (getPaddingTop() + getPaddingBottom());
-//        for(int i = n; i>=0; i--){
-//            Rect newBounds  = new Rect(x, topY, cellWidth, newHeight);
-//            digits[i].setBounds(newBounds);
-//            x += cellWidth;
-//        }
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        BallDigitDrawable[] digits = mDigits;
+
+
+        int n = digits.length - 1;
+        int x = 10;
+        int topY = getPaddingTop() + 10;
+        int newHeight = h - (getPaddingTop() + getPaddingBottom());
+        for(int i = n; i>=0; i--){
+            int cellWidth = digits[i].getIntrinsicWidth();
+            Rect newBounds  = new Rect(x, topY, cellWidth, newHeight);
+            digits[i].setBounds(newBounds);
+            x += cellWidth;
+        }
     }
 
     @Override 
     protected void onDraw(Canvas canvas){
         BallDigitDrawable[] digits = mDigits;
         super.onDraw(canvas);
+        
+        Paint p = new Paint();
+        p.setColor(0x00FF0000);
+        canvas.drawRect(
+                new Rect(getLeft(),
+                        getTop(),
+                        getRight(),
+                        getBottom())
+                , p);
+
         for(int i = 0; i<digits.length; i++){
             digits[i].draw(canvas);
         }
