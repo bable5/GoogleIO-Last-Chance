@@ -3,17 +3,59 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:padding="10dip"
     >
 
-<TextView android:layout_width = "fill_parent"
-    android:layout_height = "wrap_content"
-    android:text = "Google IO Countdown"
-    />
-    <view android:id="@+id/countdown_view"
-        class="com.mooney_ware.gio.view.BouncingBallsCountdown"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-    />
-    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Google IO Countdown" 
+        android:layout_gravity="center"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        >
 
+        <view
+            android:id="@+id/countdown_view"
+            class="com.mooney_ware.gio.view.LLTwoDigitDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center" 
+            />
+
+      <view
+            android:id="@+id/hours_counter"
+            class="com.mooney_ware.gio.view.LLTwoDigitDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_gravity="center"
+            />
+
+        <view
+            android:id="@+id/minutes_counter"
+            class="com.mooney_ware.gio.view.LLTwoDigitDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:layout_gravity="center"
+            />
+
+        <view
+            android:id="@+id/seconds_counter"
+            class="com.mooney_ware.gio.view.LLTwoDigitDisplay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" 
+            />
+    </LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Google IO Countdown" 
+        android:layout_gravity = "center"
+        />
 </LinearLayout>

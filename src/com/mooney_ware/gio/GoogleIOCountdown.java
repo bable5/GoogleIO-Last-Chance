@@ -24,6 +24,7 @@ import android.text.format.Time;
 import android.util.Log;
 
 import com.mooney_ware.gio.model.CountDownDriver;
+import com.mooney_ware.gio.model.CountdownListener;
 import com.mooney_ware.gio.view.DigitDisplay;
 
 public class GoogleIOCountdown extends Activity {
@@ -40,25 +41,31 @@ public class GoogleIOCountdown extends Activity {
 
         //AbstractCountdownView cdview = (AbstractCountdownView) findViewById(R.id.countdown_view);
 
-        DigitDisplay tdd = (DigitDisplay)findViewById(R.id.countdown_view);
-        tdd.setValue(12);
+        final DigitDisplay tdd = (DigitDisplay)findViewById(R.id.countdown_view);
         
-        DigitDisplay hours = (DigitDisplay)findViewById(R.id.hours_counter);
-        hours.setValue(34);
+        final DigitDisplay hoursView = (DigitDisplay)findViewById(R.id.hours_counter);
 
-        DigitDisplay minutes = (DigitDisplay)findViewById(R.id.minutes_counter);
-        minutes.setValue(45);
+        final DigitDisplay minutesView = (DigitDisplay)findViewById(R.id.minutes_counter);
 
-        DigitDisplay seconds = (DigitDisplay)findViewById(R.id.seconds_counter);
-        seconds.setValue(67);
+        final DigitDisplay secondsView = (DigitDisplay)findViewById(R.id.seconds_counter);
         
         
-//        if (mCountDownDriver == null) {
-//            Time targetTime = getCountdownTargetDate();
-//            mCountDownDriver = new CountDownDriver(targetTime);
-//            mCountDownDriver.registerListener(cdview);
-//            mCountDownDriver.start();
-//        }
+        if (mCountDownDriver == null) {
+            Time targetTime = getCountdownTargetDate();
+            mCountDownDriver = new CountDownDriver(targetTime);
+            mCountDownDriver.registerListener(
+                    new CountdownListener() {
+                        @Override
+                        public final void onTick(final int days, final int hours, final int minutes, final int seconds) {
+                               tdd.setValue(days);
+                               hoursView.setValue(hours);
+                               minutesView.setValue(minutes);
+                               secondsView.setValue(seconds);
+                        }
+                    }
+            );
+            mCountDownDriver.start();
+        }
     }
 
     /**

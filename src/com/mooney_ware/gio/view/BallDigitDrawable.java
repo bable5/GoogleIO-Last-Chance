@@ -41,8 +41,17 @@ public class BallDigitDrawable extends Drawable{
     private static final int CELLS_ACCROSS = 4;
     private static final int CELLS_DOWN = 7;
     
-    private int radius = 5;
-    private int dotPadding = 2;
+    private int mRadius = 5;
+    private int dotPadding = 2* mRadius + 2;
+    private final Paint mPaint = getPaint();;
+    
+    
+    public Paint getPaint(){
+        Paint p = new Paint();
+        p.setAntiAlias(true);
+        p.setColor(Color.WHITE);
+        return p;
+    }
     
     /**
      * Set the value this display should display.
@@ -58,8 +67,7 @@ public class BallDigitDrawable extends Drawable{
     }
 
     public void setBounds(Rect newBounds){
-        super.setBounds(newBounds);
-        this.bounds = newBounds;
+        super.setBounds(newBounds);        
     }
     
     Rect bounds;
@@ -76,7 +84,7 @@ public class BallDigitDrawable extends Drawable{
      */
     @Override
     public int getIntrinsicHeight() {
-        return (CELLS_DOWN * 2 * radius) + (CELLS_DOWN - 1 * dotPadding);
+        return (CELLS_DOWN * 2 * mRadius) + ((CELLS_DOWN -1)  * dotPadding);
     }
 
     /* (non-Javadoc)
@@ -84,7 +92,7 @@ public class BallDigitDrawable extends Drawable{
      */
     @Override
     public int getIntrinsicWidth() {
-        return (CELLS_ACCROSS * 2 * radius) + (CELLS_ACCROSS - 1 * dotPadding);
+        return (CELLS_ACCROSS * 2 * mRadius) + ( (CELLS_ACCROSS -1)  * dotPadding);
     }
 
     /* (non-Javadoc)
@@ -93,32 +101,24 @@ public class BallDigitDrawable extends Drawable{
     @Override
     public void draw(Canvas canvas) {
 
-        final int WIDTH = 4;
-        final int HEIGHT = 7;
-        Rect bounds = this.bounds;
-        if(bounds == null) bounds = getBounds();
-
-        Paint p = new Paint();
-        p.setColor(Color.GREEN);
-        
-        canvas.drawRect(bounds, p);
-        
+        final int WIDTH = CELLS_ACCROSS;
+        final int HEIGHT = CELLS_DOWN;
+        Rect bounds = getBounds();
+        Paint p = mPaint; 
         //bounds = new Rect(25, 25, 300, 300);
         
-        //TODO: Elim redudancy
-        int curX = bounds.left, curY = bounds.top;
-        int radius = 3; //bounds.width() / WIDTH;
-//        if(radius < 2){
-//            radius = 2;
-//        }
+        int radius = mRadius;
+        if(radius <= 1){
+            radius = 1;
+        }
         
-        int diameter = 2 * radius;
-        int xPad =  diameter + 2; //bounds.width() / ( WIDTH * ( diameter ) );
-        int yPad = diameter + 2; //bounds.height() / ( WIDTH * ( diameter ) );
-        int xStart = curX;
+        int xPad = dotPadding ;
+        int yPad = dotPadding;
+        int xStart = bounds.left + radius;
+        int curX;
+        int curY = bounds.top + radius;
         
         
-
         int consummableMask = SHAPE_DESC[value];
         Log.i(GoogleIOCountdown.TAG, "Drawing " + value + " at " + bounds);
 
