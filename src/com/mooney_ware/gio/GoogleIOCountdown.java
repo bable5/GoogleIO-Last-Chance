@@ -24,7 +24,7 @@ import android.text.format.Time;
 import android.util.Log;
 
 import com.mooney_ware.gio.model.CountDownDriver;
-import com.mooney_ware.gio.view.AbstractCountdownView;
+import com.mooney_ware.gio.view.DigitDisplay;
 
 public class GoogleIOCountdown extends Activity {
 
@@ -38,14 +38,27 @@ public class GoogleIOCountdown extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        AbstractCountdownView cdview = (AbstractCountdownView) findViewById(R.id.countdown_view);
+        //AbstractCountdownView cdview = (AbstractCountdownView) findViewById(R.id.countdown_view);
 
-        if (mCountDownDriver == null) {
-            Time targetTime = getCountdownTargetDate();
-            mCountDownDriver = new CountDownDriver(targetTime);
-            mCountDownDriver.registerListener(cdview);
-            mCountDownDriver.start();
-        }
+        DigitDisplay tdd = (DigitDisplay)findViewById(R.id.countdown_view);
+        tdd.setValue(12);
+        
+        DigitDisplay hours = (DigitDisplay)findViewById(R.id.hours_counter);
+        hours.setValue(34);
+
+        DigitDisplay minutes = (DigitDisplay)findViewById(R.id.minutes_counter);
+        minutes.setValue(45);
+
+        DigitDisplay seconds = (DigitDisplay)findViewById(R.id.seconds_counter);
+        seconds.setValue(67);
+        
+        
+//        if (mCountDownDriver == null) {
+//            Time targetTime = getCountdownTargetDate();
+//            mCountDownDriver = new CountDownDriver(targetTime);
+//            mCountDownDriver.registerListener(cdview);
+//            mCountDownDriver.start();
+//        }
     }
 
     /**
