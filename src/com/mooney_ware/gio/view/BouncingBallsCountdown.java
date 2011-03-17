@@ -134,7 +134,7 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
     static class NPlaceNumber extends Drawable {
 
         //TODO could make this more generic by using an abstract type and a factory.
-        final BallDisplay[] mDigits;
+        final BallDigitDrawable[] mDigits;
         final int mNumPlaces;
         final int BASE = 10;
         final int[] DIGIT_MASK;
@@ -144,7 +144,7 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
             
             mNumPlaces = places;
             
-            BallDisplay[] digits = new BallDisplay[places];
+            BallDigitDrawable[] digits = new BallDigitDrawable[places];
             mDigits = digits;
             
             int[] dMask = new int[places]; 
@@ -152,14 +152,14 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
             
             
             for(int i = 0; i<places; i++){
-                digits[i] = new BallDisplay();
+                digits[i] = new BallDigitDrawable();
                 dMask[i] = (int)Math.pow(BASE, i);
             }
         }
         
         public void setValue(int v){
             int value = v;
-            BallDisplay[] digitDisp = mDigits;
+            BallDigitDrawable[] digitDisp = mDigits;
 
             for(int i = mNumPlaces - 1; i>=0; i--){
                 int placeValue = value / DIGIT_MASK[i];
@@ -177,7 +177,7 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
         @Override
         public void draw(Canvas canvas) {
             
-            BallDisplay[] digitDisp = mDigits;
+            BallDigitDrawable[] digitDisp = mDigits;
 //            for(int i = 0; i<digitDisp.length; i++){
 //                digitDisp[i].draw(canvas);
 //            }
@@ -207,7 +207,7 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
          */
         @Override
         public void setColorFilter(ColorFilter cf) {
-            BallDisplay[] digitDisp = mDigits;
+            BallDigitDrawable[] digitDisp = mDigits;
             for(int i = 0; i<digitDisp.length; i++){
                 digitDisp[i].setColorFilter(cf);
             }
@@ -227,7 +227,7 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
             int h = bounds.height();
             int n = mNumPlaces;
             
-            BallDisplay[] digits = mDigits;
+            BallDigitDrawable[] digits = mDigits;
             
             for(int i = 0; i<n; i++){
                 Rect b = new Rect(left, top, left+cellWidth, h);
