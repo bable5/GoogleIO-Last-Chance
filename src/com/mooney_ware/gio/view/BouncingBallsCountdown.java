@@ -22,8 +22,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.widget.ListView;
 
 /**
  * @author Sean Mooney
@@ -38,11 +40,14 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
     NPlaceNumber mMinutesDisplay;
     NPlaceNumber mSecondsDisplay;
     
+    ListView numbers;
+    
     /**
      * @param context
      */
     public BouncingBallsCountdown(Context context) {
         super(context);
+        numbers = new ListView(context);
         init();
     }
 
@@ -52,6 +57,7 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
      */
     public BouncingBallsCountdown(Context context, AttributeSet attributes) {
         super(context, attributes);
+        numbers = new ListView(context);
         init();
     }
 
@@ -67,10 +73,50 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         
+        placeDigits();
+        
         canvas.drawColor(BG_COLOR);
         
+        mDaysDisplay.setValue(mDays);
+        mHoursDisplay.setValue(mHours);
+        mMinutesDisplay.setValue(mMinutes);
         mSecondsDisplay.setValue(mSeconds);
+        
+        mDaysDisplay.draw(canvas);
+        mHoursDisplay.draw(canvas);
+        mMinutesDisplay.draw(canvas);
         mSecondsDisplay.draw(canvas);
+    }
+    
+    protected void placeDigits(){
+        int width = getWidth();
+        int height = getHeight();
+        
+        int left = getLeft();
+        int top = getTop();
+        
+        int totalDigits = 7;
+        int cellWidth = width / totalDigits;
+        //place day;
+        int counterWidth = 3 * cellWidth;
+        Rect bounds = new Rect(left, top, left + counterWidth, top + height);
+        mDaysDisplay.setBounds(bounds);
+        
+        //place hour;
+        counterWidth = 2 * cellWidth;
+        left += counterWidth;
+        bounds = new Rect(left, top, left + counterWidth, top + height);
+        mHoursDisplay.setBounds(bounds);
+        
+        //place minute
+        left += counterWidth;
+        bounds = new Rect(left, top, left + counterWidth, top + height);
+        mMinutesDisplay.setBounds(bounds);
+        
+        //place second
+        left += counterWidth;
+        bounds = new Rect(left, top, left + counterWidth, top + height);
+        mMinutesDisplay.setBounds(bounds);
     }
 
     static class NPlaceNumber extends Drawable {
@@ -123,10 +169,10 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
         public void draw(Canvas canvas) {
             
             BallDisplay[] digitDisp = mDigits;
-            for(int i = 0; i<digitDisp.length; i++){
-                digitDisp[i].draw(canvas);
-            }
-        
+//            for(int i = 0; i<digitDisp.length; i++){
+//                digitDisp[i].draw(canvas);
+//            }
+            digitDisp[0].draw(canvas);
         }
 
         /* (non-Javadoc)
@@ -157,6 +203,28 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
                 digitDisp[i].setColorFilter(cf);
             }
         }
+
+        /* (non-Javadoc)
+         * @see android.graphics.drawable.Drawable#onBoundsChange(android.graphics.Rect)
+         */
+        @Override
+        protected void onBoundsChange(Rect bounds) {
+            super.onBoundsChange(bounds);
         
+            int cellWidth = bounds.width() / mNumPlaces;
+            int left = bounds.left;
+            int top = bounds.top;
+            
+            int h = bounds.height();
+            int n = mNumPlaces;
+            
+            BallDisplay[] digits = mDigits;
+            
+            for(int i = 0; i<n; i++){
+                Rect b = new Rect(left, top, left+cellWidth, h);
+                digits[i].setBounds(bounds);
+                left += cellWidth;
+            }
+        }   
     }
 }
