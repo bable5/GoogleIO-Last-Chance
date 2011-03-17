@@ -19,16 +19,20 @@
 package com.mooney_ware.gio.particles.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.util.Log;
+
+import com.mooney_ware.gio.particles.model.ParticleSystem.Particle;
 
 /**
  * @author Sean Mooney
  *
  */
-public class ParticleSystem {
+public class ParticleSystem implements Iterable<Particle> {
 
     RectF mSystemBounds;
     BoundsStrategy mLeftBoundStrat = PARTICLE_KILL;
@@ -37,7 +41,7 @@ public class ParticleSystem {
     BoundsStrategy mBoundBottomStrat = PARTICLE_BOUNCE;
 
     List<Particle> mParticles = new ArrayList<ParticleSystem.Particle>();
-
+ 
     /**
      * Add a new particle to the system.
      * @param size
@@ -49,6 +53,10 @@ public class ParticleSystem {
         mParticles.add(p);
     }
 
+    public void setSystemBounds(RectF systemBounds){
+        mSystemBounds = systemBounds;
+    }
+    
     /**
      * Step all the particles by 1.
      */
@@ -56,6 +64,10 @@ public class ParticleSystem {
         List<Particle> particles = mParticles;
         ArrayList<Particle> removeList = new ArrayList<Particle>();
         RectF sysBounds = mSystemBounds;
+        
+        if(sysBounds == null){
+            Log.w("ParticleSystems", "NO SYSTEM BOUNDS");
+        }
         
         for(Particle p : particles){
             p.step(1);
@@ -93,7 +105,7 @@ public class ParticleSystem {
      * @author Sean Mooney
      *
      */
-    private class Particle {
+    public class Particle {
 
         /**
          * Radius of the particle
@@ -111,6 +123,10 @@ public class ParticleSystem {
             mVelocity = velocity;
         }
 
+        public PointF getLocation(){
+            return mLocation;
+        }
+        
         public float getLeftBound(){
             return mLocation.x - mSize;
         }
@@ -152,5 +168,13 @@ public class ParticleSystem {
             REFLECT
         }
         public ParticleResult atBoundery();
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Iterable#iterator()
+     */
+    @Override
+    public Iterator<Particle> iterator() {
+        return mParticles.listIterator();
     }
 }

@@ -19,12 +19,19 @@ package com.mooney_ware.gio;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.graphics.PointF;
+import android.graphics.RectF;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.mooney_ware.gio.model.CountDownDriver;
 import com.mooney_ware.gio.model.CountdownListener;
+import com.mooney_ware.gio.particles.model.ParticleSystem;
+import com.mooney_ware.gio.particles.view.SimpleParticleView;
 import com.mooney_ware.gio.view.DigitDisplay;
 
 public class GoogleIOCountdown extends Activity {
@@ -37,6 +44,49 @@ public class GoogleIOCountdown extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //showCountDown();
+        showParticles();
+    }
+    
+    Runnable particleRunner;
+    final Handler particleHandler = new Handler();
+    public void showParticles(){
+        final ParticleSystem ps = new ParticleSystem();
+        ps.setSystemBounds(new RectF(0, 0, 300, 300));
+        
+        ps.addParticle(5, new PointF(100, 100), new PointF(1, 1));
+        ps.addParticle(5, new PointF(101, 101), new PointF(1, -11));
+        
+        final SimpleParticleView spv = new SimpleParticleView(this);
+        setContentView(spv);
+        spv.setSystem(ps);
+    
+        spv.setOnTouchListener(new View.OnTouchListener() {
+            
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.i(TAG, "STEPPING SYSTEM");
+                particleRunner.run();
+                return true;
+            }
+        });
+        
+        particleRunner = new Runnable() {
+            @Override
+            public final void run() {
+                Log.i(TAG, "Stepping particles");
+                spv.postInvalidate();
+                
+    //            particleHandler.postDelayed(this, 100);
+            }
+        };
+        
+    //    particleHandler.post(particleRunner);
+    }
+    
+    
+    
+    public void showCountDown(){
         setContentView(R.layout.main);
 
         //AbstractCountdownView cdview = (AbstractCountdownView) findViewById(R.id.countdown_view);
