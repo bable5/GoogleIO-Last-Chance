@@ -52,10 +52,10 @@ public class BallDisplay extends Drawable{
     }
 
     Rect bounds;
-    protected void onBoundsChange(Rect bounds){
-        super.onBoundsChange(bounds);
-        this.bounds = bounds;
-        //Log.i("BallDisplay", "Bounds " + bounds);
+    protected void onBoundsChange(Rect newBounds){
+        super.onBoundsChange(newBounds);
+        this.bounds = newBounds;
+        Log.i("BallDisplay", "Bounds " + bounds);
     }
     
     /* (non-Javadoc)
