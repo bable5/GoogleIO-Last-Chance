@@ -51,10 +51,15 @@ public class BallDisplay extends Drawable{
         this.value = v;
     }
 
+    public void setBounds(Rect newBounds){
+        super.setBounds(newBounds);
+        this.bounds = newBounds;
+    }
+    
     Rect bounds;
+    @Override
     protected void onBoundsChange(Rect newBounds){
         super.onBoundsChange(newBounds);
-        this.bounds = newBounds;
         Log.i("BallDisplay", "Bounds " + bounds);
     }
     
@@ -69,7 +74,7 @@ public class BallDisplay extends Drawable{
         Rect bounds = this.bounds;
         if(bounds == null)bounds = getBounds();
 
-        bounds = new Rect(25, 25, 300, 300);
+        //bounds = new Rect(25, 25, 300, 300);
         
         //TODO: Elim redudancy
         int curX = bounds.left, curY = bounds.top;

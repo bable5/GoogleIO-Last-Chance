@@ -68,7 +68,22 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
         mMinutesDisplay = new NPlaceNumber(2);
         mSecondsDisplay = new NPlaceNumber(2);
     }
+
     
+    
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.AbstractCountdownView#onTick(int, int, int, int)
+     */
+    @Override
+    public void onTick(int days, int hours, int minutes, int seconds) {
+        // TODO Auto-generated method stub
+        super.onTick(days, hours, minutes, seconds);
+        mDaysDisplay.setValue(mDays);
+        mHoursDisplay.setValue(mHours);
+        mMinutesDisplay.setValue(mMinutes);
+        mSecondsDisplay.setValue(mSeconds);
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
@@ -76,15 +91,12 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
         placeDigits();
         
         canvas.drawColor(BG_COLOR);
+
+        placeDigits();
         
-        mDaysDisplay.setValue(mDays);
-        mHoursDisplay.setValue(mHours);
-        mMinutesDisplay.setValue(mMinutes);
-        mSecondsDisplay.setValue(mSeconds);
-        
-        mDaysDisplay.draw(canvas);
-        mHoursDisplay.draw(canvas);
-        mMinutesDisplay.draw(canvas);
+//        mDaysDisplay.draw(canvas);
+//        mHoursDisplay.draw(canvas);
+//        mMinutesDisplay.draw(canvas);
         mSecondsDisplay.draw(canvas);
     }
     
@@ -147,18 +159,15 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
         
         public void setValue(int v){
             int value = v;
-            
-
             BallDisplay[] digitDisp = mDigits;
-            
-        
+
             for(int i = mNumPlaces - 1; i>=0; i--){
                 int placeValue = value / DIGIT_MASK[i];
                 value -= placeValue * DIGIT_MASK[i];
-                
+
                 digitDisp[i].setValue(placeValue);
             }
-            
+
             this.invalidateSelf();
         }
         
