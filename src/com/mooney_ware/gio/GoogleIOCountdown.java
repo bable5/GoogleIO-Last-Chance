@@ -46,7 +46,6 @@ public class GoogleIOCountdown extends Activity {
             mCountDownDriver.registerListener(cdview);
             mCountDownDriver.start();
         }
-
     }
 
     /**
