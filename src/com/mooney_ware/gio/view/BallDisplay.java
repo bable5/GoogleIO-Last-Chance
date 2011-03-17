@@ -22,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
@@ -34,20 +35,27 @@ import com.mooney_ware.gio.GoogleIOCountdown;
 public class BallDisplay extends Drawable{
 
     private int mAlpha;
-    
+
     private int value;
-    
+
     /**
      * Set the value this display should display.
      * @param v
      */
     public void setValue(int v){
-        
+
         if(value < 0 || value > 9){
             Log.w(GoogleIOCountdown.TAG, "Invalid value in BallDisplay " + v);
         }
-        
+
         this.value = v;
+    }
+
+    Rect bounds;
+    protected void onBoundsChange(Rect bounds){
+        super.onBoundsChange(bounds);
+        this.bounds = bounds;
+        //Log.i("BallDisplay", "Bounds " + bounds);
     }
     
     /* (non-Javadoc)
@@ -55,43 +63,53 @@ public class BallDisplay extends Drawable{
      */
     @Override
     public void draw(Canvas canvas) {
+
+        final int WIDTH = 4;
+        final int HEIGHT = 7;
+        Rect bounds = this.bounds;
+        if(bounds == null)bounds = getBounds();
+
+        bounds = new Rect(25, 25, 300, 300);
         
-        Log.i(GoogleIOCountdown.TAG, "Drawing " + value);
+        //TODO: Elim redudancy
+        int curX = bounds.left, curY = bounds.top;
+        int radius = 3; //bounds.width() / WIDTH;
+        if(radius < 2){
+            radius = 2;
+        }
         
-       final int WIDTH = 4;
-       final int HEIGHT = 7;
-       
-       int curX = 50, curY = 100;
-       int xPad = 30, yPad = 30;
-       int radius = 5;
-       
-       Paint p = new Paint();
-       
-       int consummableMask = SHAPE_DESC[value];
-       
-        for(int h = 0; h < HEIGHT; h++){
-            curY = 100;
-            for(int w = 0; w < WIDTH; w++){
+        int diameter = 2 * radius;
+        int xPad = bounds.width() / ( WIDTH * ( diameter ) );
+        int yPad = bounds.height() / ( WIDTH * ( diameter ) );
+        int xStart = curX;
+        int yStart = curY;
+        
+        Paint p = new Paint();
+
+        int consummableMask = SHAPE_DESC[value];
+        Log.i(GoogleIOCountdown.TAG, "Drawing " + value + " at " + bounds);
+
+        for(int h = HEIGHT - 1; h >= 0; h--){
+            curX = xStart;
+            for(int w = WIDTH - 1; w >= 0; w--){
                 int doDraw = consummableMask & 0x00000001;
-                
                 int color;
-                
-                
+
                 if(doDraw == 1){
                     color = Color.BLACK;
                 }else{
                     color = Color.GRAY;
                 }
-                
+
                 p.setColor(color);
                 canvas.drawCircle(curX, curY, radius, p);
-                
-                consummableMask = consummableMask >>> 1;
-                curY -= yPad;
+
+                consummableMask = (consummableMask >>> 1);
+                curX += xPad;
             }
-            curX += xPad;
+            curY += yPad;
         }
-        
+
     }
 
     /* (non-Javadoc)
@@ -116,31 +134,23 @@ public class BallDisplay extends Drawable{
     @Override
     public void setColorFilter(ColorFilter cf) {
         // TODO Auto-generated method stub
-        
+
     }
- 
-    
+
+
 
     // Ints to describe how the number layout.
     // Each dot to draw has a corresponding bit mask that means draw (1) or
     // don't (0)
     static final int[] SHAPE_DESC = 
-    { 
-        0x0F9999F,  //0
-        0x01111111, //1
+    {   0x0F99999F,  //0
+        0x08888888, //1
         0x0F11F88F, //2
-        0x0F11F11F, //3
-        0x0999F111, //4
+        0x0F88F88F, //3
+        0x0888F999, //4
         0x0F88F11F, //5
-        0x0F88F99F, //6
-        0x0F111111, //7
+        0x0F99F111, //6
+        0x0888888F, //7
         0x0F99F99F, //8
-        0x0F99F111 }; //9
-    
-    static final byte BYTEMASK_1000 = (byte)0x1000;
-    static final byte BYTEMASK_0100 = (byte)0x0100;
-    static final byte BYTEMASK_0010 = (byte)0x0010;
-    static final byte BYTEMASK_0001 = (byte)0x0001;
-    static final byte BYTEMASK_0000 = (byte)0x0000;
-    
+        0x0888F99F }; //9
 }
