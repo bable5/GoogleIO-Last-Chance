@@ -25,7 +25,6 @@ import android.graphics.ColorFilter;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.ListView;
 
 /**
  * @author Sean Mooney
@@ -35,20 +34,17 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
 
     static final int BG_COLOR = Color.WHITE;
     
-    NPlaceNumber mDaysDisplay;
-    NPlaceNumber mHoursDisplay;
-    NPlaceNumber mMinutesDisplay;
-    NPlaceNumber mSecondsDisplay;
-    
-    ListView numbers;
-    
+    TwoDigitDisplay mDaysDisplay;
+    TwoDigitDisplay mHoursDisplay;
+    TwoDigitDisplay mMinutesDisplay;
+    TwoDigitDisplay mSecondsDisplay;
+   
     /**
      * @param context
      */
     public BouncingBallsCountdown(Context context) {
         super(context);
-        numbers = new ListView(context);
-        init();
+        init(context);
     }
 
     /**
@@ -57,16 +53,15 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
      */
     public BouncingBallsCountdown(Context context, AttributeSet attributes) {
         super(context, attributes);
-        numbers = new ListView(context);
-        init();
+        init(context);
     }
 
     // Common setup functions for constructors.
-    private void init() {
-        mDaysDisplay = new NPlaceNumber(3);
-        mHoursDisplay = new NPlaceNumber(2);
-        mMinutesDisplay = new NPlaceNumber(2);
-        mSecondsDisplay = new NPlaceNumber(2);
+    private void init(Context context) {
+        mDaysDisplay = new TwoDigitDisplay(context);
+        mHoursDisplay = new TwoDigitDisplay(context);
+        mMinutesDisplay = new TwoDigitDisplay(context);
+        mSecondsDisplay = new TwoDigitDisplay(context);
     }
 
     
@@ -87,12 +82,8 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        
-        placeDigits();
-        
+                
         canvas.drawColor(BG_COLOR);
-
-        placeDigits();
         
 //        mDaysDisplay.draw(canvas);
 //        mHoursDisplay.draw(canvas);
@@ -100,36 +91,36 @@ public class BouncingBallsCountdown extends AbstractCountdownView {
         mSecondsDisplay.draw(canvas);
     }
     
-    protected void placeDigits(){
-        int width = getWidth();
-        int height = getHeight();
-        
-        int left = getLeft();
-        int top = getTop();
-        
-        int totalDigits = 7;
-        int cellWidth = width / totalDigits;
-        //place day;
-        int counterWidth = 3 * cellWidth;
-        Rect bounds = new Rect(left, top, left + counterWidth, top + height);
-        mDaysDisplay.setBounds(bounds);
-        
-        //place hour;
-        counterWidth = 2 * cellWidth;
-        left += counterWidth;
-        bounds = new Rect(left, top, left + counterWidth, top + height);
-        mHoursDisplay.setBounds(bounds);
-        
-        //place minute
-        left += counterWidth;
-        bounds = new Rect(left, top, left + counterWidth, top + height);
-        mMinutesDisplay.setBounds(bounds);
-        
-        //place second
-        left += counterWidth;
-        bounds = new Rect(left, top, left + counterWidth, top + height);
-        mMinutesDisplay.setBounds(bounds);
-    }
+//    protected void placeDigits(){
+//        int width = getWidth();
+//        int height = getHeight();
+//        
+//        int left = getLeft();
+//        int top = getTop();
+//        
+//        int totalDigits = 7;
+//        int cellWidth = width / totalDigits;
+//        //place day;
+//        int counterWidth = 3 * cellWidth;
+//        Rect bounds = new Rect(left, top, left + counterWidth, top + height);
+//        mDaysDisplay.setBounds(bounds);
+//        
+//        //place hour;
+//        counterWidth = 2 * cellWidth;
+//        left += counterWidth;
+//        bounds = new Rect(left, top, left + counterWidth, top + height);
+//        mHoursDisplay.setBounds(bounds);
+//        
+//        //place minute
+//        left += counterWidth;
+//        bounds = new Rect(left, top, left + counterWidth, top + height);
+//        mMinutesDisplay.setBounds(bounds);
+//        
+//        //place second
+//        left += counterWidth;
+//        bounds = new Rect(left, top, left + counterWidth, top + height);
+//        mMinutesDisplay.setBounds(bounds);
+//    }
 
     static class NPlaceNumber extends Drawable {
 

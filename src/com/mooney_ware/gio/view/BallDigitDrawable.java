@@ -72,7 +72,7 @@ public class BallDigitDrawable extends Drawable{
         final int WIDTH = 4;
         final int HEIGHT = 7;
         Rect bounds = this.bounds;
-        if(bounds == null)bounds = getBounds();
+        if(bounds == null) bounds = getBounds();
 
         //bounds = new Rect(25, 25, 300, 300);
         
@@ -84,8 +84,8 @@ public class BallDigitDrawable extends Drawable{
         }
         
         int diameter = 2 * radius;
-        int xPad = bounds.width() / ( WIDTH * ( diameter ) );
-        int yPad = bounds.height() / ( WIDTH * ( diameter ) );
+        int xPad =  diameter + 2; //bounds.width() / ( WIDTH * ( diameter ) );
+        int yPad = diameter + 2; //bounds.height() / ( WIDTH * ( diameter ) );
         int xStart = curX;
         
         Paint p = new Paint();
@@ -93,7 +93,7 @@ public class BallDigitDrawable extends Drawable{
         int consummableMask = SHAPE_DESC[value];
         Log.i(GoogleIOCountdown.TAG, "Drawing " + value + " at " + bounds);
 
-        for(int h = HEIGHT - 1; h >= 0; h--){
+        for(int h = 0; h < HEIGHT; h++){
             curX = xStart;
             for(int w = WIDTH - 1; w >= 0; w--){
                 int doDraw = consummableMask & 0x00000001;
