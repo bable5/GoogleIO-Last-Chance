@@ -74,7 +74,7 @@ public class BallDigitDrawable extends Drawable{
     @Override
     protected void onBoundsChange(Rect newBounds){
         super.onBoundsChange(newBounds);
-        Log.i("BallDisplay", "Bounds " + bounds);
+        Log.v("BallDisplay", "Bounds " + bounds);
     }
     
     
@@ -120,7 +120,6 @@ public class BallDigitDrawable extends Drawable{
         
         
         int consummableMask = SHAPE_DESC[value];
-        Log.i(GoogleIOCountdown.TAG, "Drawing " + value + " at " + bounds);
 
         for(int h = 0; h < HEIGHT; h++){
             curX = xStart;
