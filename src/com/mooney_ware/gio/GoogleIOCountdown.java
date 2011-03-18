@@ -150,7 +150,7 @@ public class GoogleIOCountdown extends Activity  {
             public final void run() {
                 ps.stepAllParticles();
                 particleView.postInvalidate();
-                particleHandler.postDelayed(this, 100);
+                particleHandler.postDelayed(this, 35);
             }
         };
         
