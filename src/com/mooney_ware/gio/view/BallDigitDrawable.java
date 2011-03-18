@@ -29,6 +29,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.util.Log;
 
 import com.mooney_ware.gio.GoogleIOCountdown;
@@ -54,6 +56,8 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
     
     private ArrayList<DigitDisplay.SegmentLightListener> segListener = new ArrayList<DigitDisplay.SegmentLightListener>();
     
+    private Drawable mOnDrawable;
+    private Drawable mOffDrawable;
     
     int mLastShapeMask = 0x00000000;
     
@@ -147,20 +151,23 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
         mLastShapeMask = consummableMask;
         ArrayList<RectF> newPoints = new ArrayList<RectF>();
         
+        Drawable dOn = getOnDrawable();
+        Drawable dOff = getOffDrawable();
+        
         for(int h = 0; h < HEIGHT; h++){
             curX = xStart;
             for(int w = WIDTH - 1; w >= 0; w--){
                 int doDraw = consummableMask & 0x00000001;
-                int color;
-
+                Drawable d;
+                
                 if(doDraw == 1){
-                    color = Color.BLACK;
+                    d = dOn;
                 }else{
-                    color = Color.GRAY;
+                    d = dOff;
                 }
 
-                p.setColor(color);
-                canvas.drawCircle(curX, curY, radius, p);
+                d.setBounds(curX - radius, curY - radius, curX + radius, curY + radius);
+                d.draw(canvas);
 
                 int pointChanged = (changeMask & 0x00000001);
                 changeMask = (changeMask >>> 1);
@@ -239,8 +246,45 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.DigitDisplay#setOnDrawable(android.graphics.drawable.Drawable)
+     */
+    @Override
+    public void setOnDrawable(Drawable d) {
+        mOnDrawable = d;
+    }
 
-    // Ints to describe how the number layout.
+    public Drawable getOnDrawable(){
+        if(mOnDrawable == null){
+            ShapeDrawable sd = new ShapeDrawable(new OvalShape());
+            sd.getPaint().setColor(Color.BLACK);
+            sd.setAlpha(255);
+            mOnDrawable = sd;
+        }
+        mOnDrawable.setVisible(true, true);
+        return mOnDrawable;
+    }
+    
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.DigitDisplay#setOffDrawable(android.graphics.drawable.Drawable)
+     */
+    @Override
+    public void setOffDrawable(Drawable d) {
+        mOffDrawable = d;
+    }
+    
+    public Drawable getOffDrawable(){
+        if(mOffDrawable == null){
+            ShapeDrawable sd = new ShapeDrawable(new OvalShape());
+            sd.getPaint().setColor(0xff74AC23);
+            sd.setAlpha(155);
+            
+            mOffDrawable = sd;
+        }
+        return mOffDrawable;
+    }
+    
+ // Ints to describe how the number layout.
     // Each dot to draw has a corresponding bit mask that means draw (1) or
     // don't (0)
     static final int[] SHAPE_DESC = 

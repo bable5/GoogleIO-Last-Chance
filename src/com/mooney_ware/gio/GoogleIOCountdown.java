@@ -43,7 +43,6 @@ public class GoogleIOCountdown extends Activity  {
     CountDownDriver mCountDownDriver = null;
     ParticleSystem mParticleSystem = null;
     Runnable particleRunner;
-    Runnable particleFountain;
     final Handler particleHandler = new Handler();
     
     DigitDisplay mDaysDisplay;
@@ -97,7 +96,7 @@ public class GoogleIOCountdown extends Activity  {
             public final void onSegmentDark(List<RectF> segmentBounds) {
                 ParticleSystem ps = mParticleSystem;
                 for(RectF bound : segmentBounds){
-                    int numToSpawn = ayn.nextInt(3) + 1;
+                    int numToSpawn = 1;
                     for(int i = 0; i< numToSpawn; i++){
                         float dx = ayn.nextInt(40) - 20; 
                         float dy = 20 - ayn.nextInt(20);
@@ -134,9 +133,6 @@ public class GoogleIOCountdown extends Activity  {
         final ParticleSystem ps = new ParticleSystem();
         mParticleSystem = ps;
         
-        ps.addParticle(5, new PointF(100, 100), new PointF(1, 11));
-        ps.addParticle(5, new PointF(101, 101), new PointF(1, -11));
-        
         ParticleSystemDrawable psd = new ParticleSystemDrawable();
         psd.setParticleSystem(ps);
         
@@ -154,16 +150,10 @@ public class GoogleIOCountdown extends Activity  {
             public final void run() {
                 ps.stepAllParticles();
                 particleView.postInvalidate();
-                particleHandler.postDelayed(this, 20);
+                particleHandler.postDelayed(this, 100);
             }
         };
         
-        particleFountain = new Runnable() {
-            @Override
-            public void run() {
-                particleHandler.postDelayed(this, 1000);
-            }
-        };
     }
     
     
@@ -180,6 +170,24 @@ public class GoogleIOCountdown extends Activity  {
         mHoursDisplay = hoursView;
         mMinutesDisplay = minutesView;
         mSecondsDisplay = secondsView;
+        
+        Drawable daysImage = getResources().getDrawable(R.drawable.daysegment);
+        Drawable hoursImage = getResources().getDrawable(R.drawable.hoursegment);
+        Drawable minuteImage = getResources().getDrawable(R.drawable.minsegment);
+        Drawable secondImage = getResources().getDrawable(R.drawable.secsegment);
+        Drawable offImage = getResources().getDrawable(R.drawable.offsegment);
+        
+        mDaysDisplay.setOnDrawable(daysImage);
+        mDaysDisplay.setOffDrawable(offImage);
+        
+        mHoursDisplay.setOnDrawable(hoursImage);
+        mHoursDisplay.setOffDrawable(offImage);
+        
+        mMinutesDisplay.setOnDrawable(minuteImage);
+        mMinutesDisplay.setOffDrawable(offImage);
+        
+        mSecondsDisplay.setOnDrawable(secondImage);
+        mSecondsDisplay.setOffDrawable(offImage);
         
         if (mCountDownDriver == null) {
             Time targetTime = getCountdownTargetDate();

@@ -24,6 +24,7 @@ import java.util.List;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -216,5 +217,29 @@ public class LLTwoDigitDisplay extends LinearLayout implements DigitDisplay{
             acc+= digits[i].getIntrinsicHeight();
         }
         return acc;
+    }
+
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.DigitDisplay#setOnDrawable(android.graphics.drawable.Drawable)
+     */
+    @Override
+    public void setOnDrawable(Drawable d) {
+        int n = mNumPlaces;
+        BallDigitDrawable[] digits = mDigits;
+        for(int i = 0; i<n; i++){
+            digits[i].setOnDrawable(d);
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.DigitDisplay#setOffDrawable(android.graphics.drawable.Drawable)
+     */
+    @Override
+    public void setOffDrawable(Drawable d) {
+        int n = mNumPlaces;
+        BallDigitDrawable[] digits = mDigits;
+        for(int i = 0; i<n; i++){
+            digits[i].setOffDrawable(d);
+        }
     }
 }

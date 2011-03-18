@@ -21,6 +21,7 @@ package com.mooney_ware.gio.view;
 import java.util.List;
 
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 
 /**
  * @author Sean Mooney
@@ -30,7 +31,9 @@ public interface DigitDisplay {
     public void setValue(int i);
     public int getIntrinsicWidth();
     public int getIntrinsicHeight();
-    public void registerSegmentListener(SegmentLightListener listener); 
+    public void registerSegmentListener(SegmentLightListener listener);
+    public void setOnDrawable(Drawable d);
+    public void setOffDrawable(Drawable d);
 
     public static interface SegmentLightListener{
         public void onSegmentLight(List<RectF> segmentBounds);

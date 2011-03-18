@@ -7,5 +7,5 @@
     android:width = "5dip"/>
     <gradient android:angle="45"
         android:startColor="#6000"
-        android:endColor="#F13F" />
+        android:endColor="#FF00" />
 </shape>
