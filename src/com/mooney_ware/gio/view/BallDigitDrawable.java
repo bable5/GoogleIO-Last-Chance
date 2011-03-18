@@ -50,9 +50,8 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
     private static final int CELLS_ACCROSS = 4;
     private static final int CELLS_DOWN = 7;
     
-    private int mRadius = 5;
-    private int dotPadding = 2* mRadius + 2;
-    private final Paint mPaint = getPaint();;
+    private int mDiameter = 5;
+    private int dotPadding = 2* mDiameter + 2;
     
     private ArrayList<DigitDisplay.SegmentLightListener> segListener = new ArrayList<DigitDisplay.SegmentLightListener>();
     
@@ -111,7 +110,7 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
      */
     @Override
     public int getIntrinsicHeight() {
-        return (CELLS_DOWN * 2 * mRadius) + ((CELLS_DOWN -1)  * dotPadding);
+        return (CELLS_DOWN * mDiameter) + ((CELLS_DOWN -1)  * dotPadding);
     }
 
     /* (non-Javadoc)
@@ -119,7 +118,7 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
      */
     @Override
     public int getIntrinsicWidth() {
-        return (CELLS_ACCROSS * 2 * mRadius) + ( (CELLS_ACCROSS -1)  * dotPadding);
+        return (CELLS_ACCROSS * mDiameter) + ( (CELLS_ACCROSS -1)  * dotPadding);
     }
 
     /* (non-Javadoc)
@@ -133,7 +132,7 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
         final int HEIGHT = CELLS_DOWN;
         Rect bounds = getBounds();
         
-        int radius = mRadius;
+        int radius = mDiameter;
         if(radius <= 1){
             radius = 1;
         }
