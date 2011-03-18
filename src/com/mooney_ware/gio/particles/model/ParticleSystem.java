@@ -39,8 +39,8 @@ public class ParticleSystem implements Iterable<Particle> {
     RectF mSystemBounds;
     BoundsStrategy mLeftBoundStrat = PARTICLE_KILL;
     BoundsStrategy mRightBoundStrat = PARTICLE_KILL;
-    BoundsStrategy mBoundsTopStrat = PARTICLE_KILL;
-    BoundsStrategy mBoundBottomStrat = PARTICLE_BOUNCE;
+    BoundsStrategy mTopBoundStrat = PARTICLE_KILL;
+    BoundsStrategy mBottomBoundStrat = PARTICLE_BOUNCE;
 
     List<Particle> mParticles = new ArrayList<ParticleSystem.Particle>();
  
@@ -116,9 +116,9 @@ public class ParticleSystem implements Iterable<Particle> {
             }else if(sysBounds.right < pBounds.right){
                 onPassedBoundry(removeList, p, mRightBoundStrat);
             }else if(sysBounds.top > pBounds.top){
-                onPassedBoundry(removeList, p, mBoundsTopStrat);
+                onPassedBoundry(removeList, p, mTopBoundStrat);
             }else if(sysBounds.bottom < pBounds.bottom){
-                onPassedBoundry(removeList, p, mBoundBottomStrat);
+                onPassedBoundry(removeList, p, mBottomBoundStrat);
             }
         }
         mParticles.removeAll(removeList);
@@ -126,6 +126,64 @@ public class ParticleSystem implements Iterable<Particle> {
         if(updateNotifaction != null){
             updateNotifaction.postInvalidate();
         }
+    }
+
+    
+    
+    /**
+     * @return the mLeftBoundStrat
+     */
+    public BoundsStrategy getLeftBoundStrat() {
+        return mLeftBoundStrat;
+    }
+
+    /**
+     * @param mLeftBoundStrat the mLeftBoundStrat to set
+     */
+    public void setmLeftBoundStrat(BoundsStrategy mLeftBoundStrat) {
+        this.mLeftBoundStrat = mLeftBoundStrat;
+    }
+
+    /**
+     * @return the mRightBoundStrat
+     */
+    public BoundsStrategy getRightBoundStrat() {
+        return mRightBoundStrat;
+    }
+
+    /**
+     * @param mRightBoundStrat the mRightBoundStrat to set
+     */
+    public void setRightBoundStrat(BoundsStrategy mRightBoundStrat) {
+        this.mRightBoundStrat = mRightBoundStrat;
+    }
+
+    /**
+     * @return the mTopBoundsStrat
+     */
+    public BoundsStrategy getTopBoundStrat() {
+        return mTopBoundStrat;
+    }
+
+    /**
+     * @param mTopBoundsStrat the mTopBoundsStrat to set
+     */
+    public void setTopBoundStrat(BoundsStrategy mTopBoundsStrat) {
+        this.mTopBoundStrat = mTopBoundsStrat;
+    }
+
+    /**
+     * @return the mBottomBoundsStrat
+     */
+    public BoundsStrategy getBottomBoundStrat() {
+        return mBottomBoundStrat;
+    }
+
+    /**
+     * @param mBottomBoundsStrat the mBottomBoundsStrat to set
+     */
+    public void setmBottomBoundsStrat(BoundsStrategy mBottomBoundsStrat) {
+        this.mBottomBoundStrat = mBottomBoundsStrat;
     }
 
     private void onPassedBoundry(List<Particle> removeList, Particle p, BoundsStrategy strat){
@@ -145,6 +203,7 @@ public class ParticleSystem implements Iterable<Particle> {
                 break;
         }
     }
+    
     
     /**
      * @author Sean Mooney
