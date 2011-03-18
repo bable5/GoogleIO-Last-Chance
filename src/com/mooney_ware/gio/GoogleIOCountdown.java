@@ -19,8 +19,10 @@ package com.mooney_ware.gio;
 import java.util.Calendar;
 
 import android.app.Activity;
+import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.Time;
@@ -29,6 +31,7 @@ import android.util.Log;
 import com.mooney_ware.gio.model.CountDownDriver;
 import com.mooney_ware.gio.model.CountdownListener;
 import com.mooney_ware.gio.particles.model.ParticleSystem;
+import com.mooney_ware.gio.particles.model.ParticleSystem.Particle;
 import com.mooney_ware.gio.particles.view.SimpleParticleView;
 import com.mooney_ware.gio.view.DigitDisplay;
 
@@ -37,6 +40,7 @@ public class GoogleIOCountdown extends Activity {
     public static final String TAG = "GIO";
 
     private CountDownDriver mCountDownDriver = null;
+    private ParticleSystem mParticleSystem = null;
 
     /** Called when the activity is first created. */
     @Override
@@ -49,7 +53,9 @@ public class GoogleIOCountdown extends Activity {
     Runnable particleRunner;
     final Handler particleHandler = new Handler();
     public void setupParticles(){
-        final ParticleSystem ps = new ParticleSystem();
+        final ParticleSystem ps = mParticleSystem;
+        mParticleSystem = ps;
+        
         ps.setSystemBounds(new RectF(0, 0, 800, 480));
         
         ps.addParticle(5, new PointF(100, 100), new PointF(1, 1));
