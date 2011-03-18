@@ -192,14 +192,15 @@ public class ParticleSystem implements Iterable<Particle> {
         switch(strat.atBoundery()){
             case DIE:
             {
-                Log.i("PS", "Removing " + p + " from the system");
+                //Log.i("PS", "Removing " + p + " from the system");
                 removeList.add(p);
             }
                 break;
             case REFLECT:
             {
                 PointF vel = p.mVelocity;
-                vel.x = -vel.x;
+                //assume a simple reflection against a flat surface
+                //x stays the same, y flips.
                 vel.y = -vel.y;
             }
                 break;
