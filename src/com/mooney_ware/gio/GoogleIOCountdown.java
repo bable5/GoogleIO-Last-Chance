@@ -44,8 +44,8 @@ public class GoogleIOCountdown extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //showCountDown();
-        showParticles();
+        showCountDown();
+        //showParticles();
     }
     
     Runnable particleRunner;
@@ -89,16 +89,10 @@ public class GoogleIOCountdown extends Activity {
     public void showCountDown(){
         setContentView(R.layout.main);
 
-        //AbstractCountdownView cdview = (AbstractCountdownView) findViewById(R.id.countdown_view);
-
-        final DigitDisplay tdd = (DigitDisplay)findViewById(R.id.countdown_view);
-        
+        final DigitDisplay tdd = (DigitDisplay)findViewById(R.id.days_counter);
         final DigitDisplay hoursView = (DigitDisplay)findViewById(R.id.hours_counter);
-
         final DigitDisplay minutesView = (DigitDisplay)findViewById(R.id.minutes_counter);
-
         final DigitDisplay secondsView = (DigitDisplay)findViewById(R.id.seconds_counter);
-        
         
         if (mCountDownDriver == null) {
             Time targetTime = getCountdownTargetDate();

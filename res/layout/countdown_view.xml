@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/countdown_view"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="#00FFFFFF">
+    <view
+        android:id="@+id/days_counter"
+        class="com.mooney_ware.gio.view.LLTwoDigitDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center" />
+
+    <view
+        android:id="@+id/hours_counter"
+        class="com.mooney_ware.gio.view.LLTwoDigitDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <view
+        android:id="@+id/minutes_counter"
+        class="com.mooney_ware.gio.view.LLTwoDigitDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <view
+        android:id="@+id/seconds_counter"
+        class="com.mooney_ware.gio.view.LLTwoDigitDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+</LinearLayout>
+  

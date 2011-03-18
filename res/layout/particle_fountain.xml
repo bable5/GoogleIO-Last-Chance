@@ -8,5 +8,7 @@
         android:id="@+id/particle_fountain_view"
         class="com.mooney_ware.gio.particles.view.SimpleParticleView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/>
+        android:layout_height="fill_parent"
+        android:background="#00FFFFFF"
+        />
 </LinearLayout>
