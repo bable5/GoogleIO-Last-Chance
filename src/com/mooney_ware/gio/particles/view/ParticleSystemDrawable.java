@@ -53,10 +53,9 @@ public class ParticleSystemDrawable extends Drawable{
         List<Particle> ps = mParticles.copyParticles();
         if(ps == null) return;
         
-        Drawable d = getParticleDrawable();
-        
         for(Particle p : ps){
             PointF loc = p.getLocation();
+            Drawable d = p.getDrawable();
             int r = (int)p.getSize();
             d.setBounds((int)loc.x - r, (int)loc.y -r, (int)loc.x + r, (int)loc.y + r);
             d.draw(canvas);

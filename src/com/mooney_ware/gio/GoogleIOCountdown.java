@@ -50,6 +50,12 @@ public class GoogleIOCountdown extends Activity  {
     DigitDisplay mMinutesDisplay;
     DigitDisplay mSecondsDisplay;
     
+    Drawable mDaysImage; 
+    Drawable mHoursImage;
+    Drawable mMinuteImage;
+    Drawable mSecondImage;
+    Drawable mOffImage;
+    
     
     /** Called when the activity is first created. */
     @Override
@@ -57,8 +63,14 @@ public class GoogleIOCountdown extends Activity  {
         super.onCreate(savedInstanceState);
         setupCountDown();
         setupParticles();
+
+        mDaysImage = getResources().getDrawable(R.drawable.daysegment);
+        mHoursImage = getResources().getDrawable(R.drawable.hoursegment);
+        mMinuteImage = getResources().getDrawable(R.drawable.minsegment);
+        mSecondImage = getResources().getDrawable(R.drawable.secsegment);
+        mOffImage = getResources().getDrawable(R.drawable.offsegment);
     }
-    
+
     @Override
     public void onResume(){
         super.onResume();
@@ -78,19 +90,18 @@ public class GoogleIOCountdown extends Activity  {
        class Listener implements DigitDisplay.SegmentLightListener{
            Random ayn = new Random();
            
+            Drawable newParticleDrawable;
             
             float xAdj, yAdj;
             
-            public Listener(float xAdj, float yAdj){
+            public Listener(float xAdj, float yAdj, Drawable d){
                 this.xAdj = xAdj;
                 this.yAdj = yAdj;
+                this.newParticleDrawable = d;
             }
             
             @Override
-            public final void onSegmentLight(List<RectF> segmentBounds) {
-                // TODO Auto-generated method stub
-                
-            }
+            public final void onSegmentLight(List<RectF> segmentBounds) {}
 
             @Override
             public final void onSegmentDark(List<RectF> segmentBounds) {
@@ -104,11 +115,12 @@ public class GoogleIOCountdown extends Activity  {
                         int radius = (int)(bound.width())/2;
                         if(radius < 2)
                             radius = 2;
-
-
+                        
+                        
                         ps.addParticle(radius,
                                 new PointF(bound.centerX() + xAdj, bound.centerY() + yAdj), 
-                                new PointF(dx, dy)
+                                new PointF(dx, dy),
+                                newParticleDrawable
                         );
                     }
                 }
@@ -123,10 +135,10 @@ public class GoogleIOCountdown extends Activity  {
         
         float xOffset = 10; //allDigits.getLeft();
         
-        mDaysDisplay.registerSegmentListener(new Listener(xOffset, yOffset));
-        mHoursDisplay.registerSegmentListener(new Listener(xOffset += mDaysDisplay.getIntrinsicWidth(), yOffset));
-        mMinutesDisplay.registerSegmentListener(new Listener(xOffset += mDaysDisplay.getIntrinsicWidth(), yOffset));
-        mSecondsDisplay.registerSegmentListener(new Listener(xOffset += mDaysDisplay.getIntrinsicWidth(), yOffset));
+        mDaysDisplay.registerSegmentListener(new Listener(xOffset, yOffset, mDaysImage));
+        mHoursDisplay.registerSegmentListener(new Listener(xOffset += mDaysDisplay.getIntrinsicWidth(), yOffset, mHoursImage));
+        mMinutesDisplay.registerSegmentListener(new Listener(xOffset += mDaysDisplay.getIntrinsicWidth(), yOffset, mMinuteImage));
+        mSecondsDisplay.registerSegmentListener(new Listener(xOffset += mDaysDisplay.getIntrinsicWidth(), yOffset, mSecondImage));
     }
     
     protected void setupParticles(){

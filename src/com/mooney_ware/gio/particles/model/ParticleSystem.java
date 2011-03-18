@@ -22,8 +22,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
@@ -71,10 +75,15 @@ public class ParticleSystem implements Iterable<Particle> {
      * @param velocity
      */
     public void addParticle(int size, PointF loc, PointF vel){
-        Particle p = new Particle(size, loc, vel);
-        mParticles.add(p);
+        addParticle(size, loc, vel, null);
     }
 
+    public void addParticle(int size, PointF loc, PointF vel, Drawable img){
+        Particle p = new Particle(size, loc, vel);
+        p.setDrawable(img);
+        mParticles.add(p);
+    }
+    
     public void setSystemBounds(RectF systemBounds){
         mSystemBounds = systemBounds;
     }
@@ -232,6 +241,8 @@ public class ParticleSystem implements Iterable<Particle> {
      */
     public class Particle {
 
+        private Drawable mViewDrawable;
+        
         /**
          * Radius of the particle
          */
@@ -276,6 +287,20 @@ public class ParticleSystem implements Iterable<Particle> {
             return mLocation.y - mSize;
         }
 
+        public void setDrawable(Drawable d){
+            this.mViewDrawable = d;
+        }
+        
+        public Drawable getDrawable(){
+            if(mViewDrawable == null){
+                ShapeDrawable s = new ShapeDrawable(new OvalShape());
+                s.getPaint().setColor(Color.RED);
+                mViewDrawable = s;
+            }
+            
+            return mViewDrawable;
+        }
+        
         public void step(int dT){
             PointF loc = mLocation;
             PointF vel = mVelocity;
