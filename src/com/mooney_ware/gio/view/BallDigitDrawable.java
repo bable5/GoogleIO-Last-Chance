@@ -21,6 +21,7 @@ package com.mooney_ware.gio.view;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -42,6 +43,8 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
     private int mAlpha;
 
     private int value;
+    //value last time paint was called.
+    private AtomicBoolean valueChanged = new AtomicBoolean(false);
 
     private static final int CELLS_ACCROSS = 4;
     private static final int CELLS_DOWN = 7;
@@ -60,6 +63,7 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
         return p;
     }
     
+    int oldValue;
     /**
      * Set the value this display should display.
      * @param v
@@ -71,19 +75,28 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
             Log.w(GoogleIOCountdown.TAG, "Invalid value in BallDisplay " + v);
         }
 
+        //Log.i("BallDigitDrawable", "Setting value " + v);
+        
+        
         this.value = v;
+       
+        if(oldValue != v){
+            valueChanged.set(true);
+            oldValue = v;
+        }
         this.invalidateSelf();
+        
     }
 
     public void setBounds(Rect newBounds){
         super.setBounds(newBounds);        
     }
     
-    Rect bounds;
+    //Rect bounds;
     @Override
     protected void onBoundsChange(Rect newBounds){
         super.onBoundsChange(newBounds);
-        Log.v("BallDisplay", "Bounds " + bounds);
+        Log.v("BallDisplay", "Bounds " + getBounds());
     }
     
     
@@ -150,15 +163,20 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
             }
             curY += yPad;
         }
-
         
-        notifyDarkSements(Arrays.asList(new RectF( 
-                bounds.left, 
-                bounds.top, 
-                bounds.left +radius, 
-                bounds.top + radius ) 
-        ));
+        if(valueChanged.get()){
+            Log.i("BallDigitDrawable", "Unexpected changed value " + value + " in draw ");
+        }
         
+        //TODO: Is there still a risk of a lost update?
+        if(valueChanged.getAndSet(false)){
+            notifyDarkSements(Arrays.asList(new RectF( 
+                    bounds.left, 
+                    bounds.top, 
+                    bounds.left +radius, 
+                    bounds.top + radius ) 
+            ));
+        }
     }
 
     /* (non-Javadoc)
@@ -199,6 +217,8 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
     
     public void notifyDarkSements(List<RectF> segmentBounds) {
         synchronized(segListener){
+            if(segListener.isEmpty())return;
+            Log.i("BallDigitDrawable", "Notifying dark segments, value " + value);
             for(SegmentLightListener sll : segListener){
                 //copy the list to prevent aliasing problems if 
                 //the reciever changes the list. Changes to the rectangles will be seen.
