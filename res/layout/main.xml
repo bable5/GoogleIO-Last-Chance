@@ -4,7 +4,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
     <LinearLayout
-
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -19,6 +18,7 @@
             android:textSize="15pt"
              />
         <include
+            android:id = "@+id/main_countdown"
             layout="@layout/countdown_view"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"

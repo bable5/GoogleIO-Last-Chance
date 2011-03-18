@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.mooney_ware.gio.model.CountDownDriver;
@@ -56,6 +57,7 @@ public class GoogleIOCountdown extends Activity  {
     Drawable mSecondImage;
     Drawable mOffImage;
     
+    boolean registeredListeners = false;
     
     /** Called when the activity is first created. */
     @Override
@@ -76,7 +78,11 @@ public class GoogleIOCountdown extends Activity  {
         super.onResume();
         particleHandler.post(particleRunner);
         mCountDownDriver.start();
-        registerDigitChangeListeners();
+        
+        if(!registeredListeners){
+            registerDigitChangeListeners();
+            registeredListeners = true;
+        }
     }
     
     @Override
@@ -87,7 +93,7 @@ public class GoogleIOCountdown extends Activity  {
     }
     
     protected void  registerDigitChangeListeners(){
-       class Listener implements DigitDisplay.SegmentLightListener{
+       final class Listener implements DigitDisplay.SegmentLightListener{
            Random ayn = new Random();
            
             Drawable newParticleDrawable;
@@ -128,12 +134,11 @@ public class GoogleIOCountdown extends Activity  {
             
         };
         
-//        View allDigits = findViewById(R.layout.main);
-        
+        View allDigits = findViewById(R.id.seconds_counter);
+      
         //TODO: Fix yoffset and xoffset.
-        float yOffset = 150; //allDigits.getTop();
-        
-        float xOffset = 10; //allDigits.getLeft();
+        float yOffset = 150;
+        float xOffset = 200;
         
         mDaysDisplay.registerSegmentListener(new Listener(xOffset, yOffset, mDaysImage));
         mHoursDisplay.registerSegmentListener(new Listener(xOffset += mDaysDisplay.getIntrinsicWidth(), yOffset, mHoursImage));
@@ -153,10 +158,6 @@ public class GoogleIOCountdown extends Activity  {
         psd.setParticleDrawable(d);
         particleView.setImageDrawable(psd);
         
-        //RectF particleBounds = new RectF(particleView.getLeft(), particleView.getTop(), particleView.getRight(), particleView.getBottom());
-        //ps.setSystemBounds(particleBounds);
-        
-        
         particleRunner = new Runnable() {
             @Override
             public final void run() {
@@ -165,7 +166,6 @@ public class GoogleIOCountdown extends Activity  {
                 particleHandler.postDelayed(this, 35);
             }
         };
-        
     }
     
     
