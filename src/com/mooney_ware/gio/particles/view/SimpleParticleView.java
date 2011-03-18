@@ -20,11 +20,11 @@ package com.mooney_ware.gio.particles.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.mooney_ware.gio.R;
@@ -45,6 +45,7 @@ public class SimpleParticleView extends View{
      */
     public SimpleParticleView(Context context) {
         super(context);
+        setBackgroundColor(Color.TRANSPARENT);
     }
 
     /**
@@ -53,6 +54,7 @@ public class SimpleParticleView extends View{
      */
     public SimpleParticleView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setBackgroundColor(Color.TRANSPARENT);
     }
     
     public void setSystem(ParticleSystem system){
@@ -69,8 +71,8 @@ public class SimpleParticleView extends View{
         
         for(Particle p : mSystem){
             PointF loc = p.getLocation();
-            Log.i("ParticleView", "Drawing a particle at " + loc.x + "," + loc.y);
-            d.setBounds((int)loc.x, (int)loc.y, (int)loc.x + 5, (int)loc.y + 5);
+            int r = (int)p.getSize();
+            d.setBounds((int)loc.x - r, (int)loc.y -r, (int)loc.x + r, (int)loc.y + r);
             d.draw(canvas);
         }
     }

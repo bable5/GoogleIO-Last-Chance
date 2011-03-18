@@ -18,12 +18,12 @@
         android:layout_height="fill_parent"
         android:layout_gravity="center">
         <include
-            layout="@layout/countdown_view"
+            layout="@layout/particle_fountain"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center" />
         <include
-            layout="@layout/particle_fountain"
+            layout="@layout/countdown_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center" />

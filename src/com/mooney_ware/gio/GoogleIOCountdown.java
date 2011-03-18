@@ -25,8 +25,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.Time;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.mooney_ware.gio.model.CountDownDriver;
 import com.mooney_ware.gio.model.CountdownListener;
@@ -44,15 +42,15 @@ public class GoogleIOCountdown extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showCountDown();
-        //showParticles();
+        setupCountDown();
+        setupParticles();
     }
     
     Runnable particleRunner;
     final Handler particleHandler = new Handler();
-    public void showParticles(){
+    public void setupParticles(){
         final ParticleSystem ps = new ParticleSystem();
-        ps.setSystemBounds(new RectF(0, 0, 300, 300));
+        ps.setSystemBounds(new RectF(0, 0, 800, 480));
         
         ps.addParticle(5, new PointF(100, 100), new PointF(1, 1));
         ps.addParticle(5, new PointF(101, 101), new PointF(1, -11));
@@ -60,33 +58,23 @@ public class GoogleIOCountdown extends Activity {
         final SimpleParticleView spv = new SimpleParticleView(this);
         setContentView(spv);
         spv.setSystem(ps);
-    
-        spv.setOnTouchListener(new View.OnTouchListener() {
-            
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                Log.i(TAG, "STEPPING SYSTEM");
-                particleRunner.run();
-                return true;
-            }
-        });
         
         particleRunner = new Runnable() {
             @Override
             public final void run() {
                 Log.i(TAG, "Stepping particles");
+                ps.stepAllParticles();
                 spv.postInvalidate();
-                
-    //            particleHandler.postDelayed(this, 100);
+                particleHandler.postDelayed(this, 100);
             }
         };
         
-    //    particleHandler.post(particleRunner);
+        particleHandler.postDelayed(particleRunner, 100);
     }
     
     
     
-    public void showCountDown(){
+    public void setupCountDown(){
         setContentView(R.layout.main);
 
         final DigitDisplay tdd = (DigitDisplay)findViewById(R.id.days_counter);
