@@ -12,25 +12,10 @@
         android:layout_height="wrap_content"
         android:text="Google IO Countdown"
         android:layout_gravity="center_horizontal" />
-
-    <FrameLayout
+    <include
+        layout="@layout/countdown_view"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="center">
-        <include
-            layout="@layout/countdown_view"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center" />
-        <include
-            layout="@layout/particle_fountain"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_gravity="center" />
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="A test label!"/>
-    </FrameLayout>
+        android:layout_gravity="center" />
 
 </LinearLayout>
