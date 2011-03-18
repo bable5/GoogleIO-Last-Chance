@@ -127,12 +127,11 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
      */
     @Override
     public void draw(Canvas canvas) {
-
+        
+        
         final int WIDTH = CELLS_ACCROSS;
         final int HEIGHT = CELLS_DOWN;
         Rect bounds = getBounds();
-        Paint p = mPaint; 
-        //bounds = new Rect(25, 25, 300, 300);
         
         int radius = mRadius;
         if(radius <= 1){
@@ -226,7 +225,6 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
     public void notifyDarkSements(List<RectF> segmentBounds) {
         synchronized(segListener){
             if(segListener.isEmpty())return;
-            Log.i("BallDigitDrawable", "Notifying dark segments, value " + value);
             for(SegmentLightListener sll : segListener){
                 //copy the list to prevent aliasing problems if 
                 //the reciever changes the list. Changes to the rectangles will be seen.
