@@ -106,11 +106,13 @@ public class ParticleSystem implements Iterable<Particle> {
         
         if(sysBounds == null){
             Log.w("ParticleSystems", "NO SYSTEM BOUNDS");
+            return;
         }
         
         for(Particle p : particles){
             p.step(1);
             RectF pBounds = new RectF(p.getLeftBound(), p.getTopBound(), p.getRightBound(), p.getBottomBound());
+            
             if(sysBounds.left > pBounds.left){
                 onPassedBoundry(removeList, p, mLeftBoundStrat);
             }else if(sysBounds.right < pBounds.right){
