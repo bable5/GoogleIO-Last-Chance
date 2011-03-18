@@ -22,9 +22,12 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.util.Log;
 
 import com.mooney_ware.gio.particles.model.ParticleSystem;
 import com.mooney_ware.gio.particles.model.ParticleSystem.Particle;
@@ -58,6 +61,22 @@ public class ParticleSystemDrawable extends Drawable{
         }
         
     }
+
+    
+    /* (non-Javadoc)
+     * @see android.graphics.drawable.Drawable#onBoundsChange(android.graphics.Rect)
+     */
+    @Override
+    protected void onBoundsChange(Rect bounds) {
+
+        Log.i("PSDrawable", "Bound Change");
+        super.onBoundsChange(bounds);
+        if(mParticles != null){
+            Log.i("PSDrawable", "Changing system bounds");
+            mParticles.setSystemBounds(new RectF(bounds));
+        }
+    }
+
 
     /**
      * Get the drawable for the particle.
