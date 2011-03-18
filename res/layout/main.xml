@@ -30,9 +30,5 @@
             android:src="@drawable/icon"
             android:layout_height="fill_parent"
             android:layout_width="fill_parent" />
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="Hello Layer" />
     </FrameLayout>
 </FrameLayout>
