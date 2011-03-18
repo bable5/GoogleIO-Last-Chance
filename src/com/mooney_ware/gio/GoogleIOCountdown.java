@@ -19,20 +19,18 @@ package com.mooney_ware.gio;
 import java.util.Calendar;
 
 import android.app.Activity;
-import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.Time;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.mooney_ware.gio.model.CountDownDriver;
 import com.mooney_ware.gio.model.CountdownListener;
 import com.mooney_ware.gio.particles.model.ParticleSystem;
-import com.mooney_ware.gio.particles.model.ParticleSystem.Particle;
-import com.mooney_ware.gio.particles.view.SimpleParticleView;
+import com.mooney_ware.gio.particles.view.ParticleSystemDrawable;
 import com.mooney_ware.gio.view.DigitDisplay;
 
 public class GoogleIOCountdown extends Activity {
@@ -51,9 +49,10 @@ public class GoogleIOCountdown extends Activity {
     }
     
     Runnable particleRunner;
+    Runnable particleFountain;
     final Handler particleHandler = new Handler();
     public void setupParticles(){
-        final ParticleSystem ps = mParticleSystem;
+        final ParticleSystem ps = new ParticleSystem();
         mParticleSystem = ps;
         
         ps.setSystemBounds(new RectF(0, 0, 800, 480));
@@ -61,21 +60,31 @@ public class GoogleIOCountdown extends Activity {
         ps.addParticle(5, new PointF(100, 100), new PointF(1, 1));
         ps.addParticle(5, new PointF(101, 101), new PointF(1, -11));
         
-        final SimpleParticleView spv = new SimpleParticleView(this);
-        setContentView(spv);
-        spv.setSystem(ps);
+        ParticleSystemDrawable psd = new ParticleSystemDrawable();
+        psd.setParticleSystem(ps);
+        final ImageView particleView = (ImageView)findViewById(R.id.particle_imageview);
+        particleView.setImageDrawable(psd);
         
         particleRunner = new Runnable() {
             @Override
             public final void run() {
                 Log.i(TAG, "Stepping particles");
                 ps.stepAllParticles();
-                spv.postInvalidate();
+                particleView.postInvalidate();
                 particleHandler.postDelayed(this, 100);
             }
         };
         
-        particleHandler.postDelayed(particleRunner, 100);
+        particleFountain = new Runnable() {
+            @Override
+            public void run() {
+                ps.addParticle(10, new PointF(100, 100), new PointF(1, -11));
+                particleHandler.postDelayed(this, 1000);
+            }
+        };
+        
+        particleHandler.postDelayed(particleRunner, 1000);
+        particleHandler.postDelayed(particleFountain, 5000);
     }
     
     
