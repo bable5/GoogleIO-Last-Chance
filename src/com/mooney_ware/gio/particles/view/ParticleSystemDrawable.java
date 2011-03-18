@@ -18,6 +18,8 @@
  */
 package com.mooney_ware.gio.particles.view;
 
+import java.util.List;
+
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
@@ -48,7 +50,7 @@ public class ParticleSystemDrawable extends Drawable{
      */
     @Override
     public void draw(Canvas canvas) {
-        ParticleSystem ps = mParticles;
+        List<Particle> ps = mParticles.copyParticles();
         if(ps == null) return;
         
         Drawable d = getParticleDrawable();

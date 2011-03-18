@@ -24,6 +24,7 @@ import java.util.List;
 
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -101,33 +102,69 @@ public class ParticleSystem implements Iterable<Particle> {
      */
     public void stepAllParticles(){
         List<Particle> particles = mParticles;
-        ArrayList<Particle> removeList = new ArrayList<Particle>();
-        RectF sysBounds = mSystemBounds;
+        final RectF sysBounds = mSystemBounds;
         
         if(sysBounds == null){
             Log.w("ParticleSystems", "NO SYSTEM BOUNDS");
             return;
         }
         
-        for(Particle p : particles){
-            p.step(1);
-            RectF pBounds = new RectF(p.getLeftBound(), p.getTopBound(), p.getRightBound(), p.getBottomBound());
-            
-            if(sysBounds.left > pBounds.left){
-                onPassedBoundry(removeList, p, mLeftBoundStrat);
-            }else if(sysBounds.right < pBounds.right){
-                onPassedBoundry(removeList, p, mRightBoundStrat);
-            }else if(sysBounds.top > pBounds.top){
-                onPassedBoundry(removeList, p, mTopBoundStrat);
-            }else if(sysBounds.bottom < pBounds.bottom){
-                onPassedBoundry(removeList, p, mBottomBoundStrat);
-            }
-        }
-        mParticles.removeAll(removeList);
+        new AsyncTask<Particle, Void, Void>(){
+
+            @Override
+            protected Void doInBackground(Particle... particles) {
+                
+                ArrayList<Particle> removeList = new ArrayList<Particle>();
+                
+                BoundsStrategy lbound = mLeftBoundStrat;
+                BoundsStrategy rbound = mRightBoundStrat;
+                BoundsStrategy tbound = mTopBoundStrat;
+                BoundsStrategy bbound = mBottomBoundStrat;
+                
+                for(Particle p : particles){
+                    p.step(1);
+                    RectF pBounds = new RectF(p.getLeftBound(), p.getTopBound(), p.getRightBound(), p.getBottomBound());
+                    
+                    if(sysBounds.left > pBounds.left){
+                        onPassedBoundry(removeList, p, lbound);
+                    }else if(sysBounds.right < pBounds.right){
+                        onPassedBoundry(removeList, p, rbound);
+                    }else if(sysBounds.top > pBounds.top){
+                        onPassedBoundry(removeList, p, tbound);
+                    }else if(sysBounds.bottom < pBounds.bottom){
+                        onPassedBoundry(removeList, p, bbound);
+                    }
+                }
+                mParticles.removeAll(removeList);
         
-        if(updateNotifaction != null){
-            updateNotifaction.postInvalidate();
-        }
+                if(updateNotifaction != null){
+                    updateNotifaction.postInvalidate();
+                }
+                
+                return null;
+            }
+            
+            private void onPassedBoundry(List<Particle> removeList, Particle p, BoundsStrategy strat){
+                switch(strat.atBoundery()){
+                    case DIE:
+                    {
+                        //Log.i("PS", "Removing " + p + " from the system");
+                        removeList.add(p);
+                    }
+                        break;
+                    case REFLECT:
+                    {
+                        PointF vel = p.mVelocity;
+                        //assume a simple reflection against a flat surface
+                        //x stays the same, y flips.
+                        vel.y = -vel.y;
+                    }
+                        break;
+                }
+            }
+            
+        }.execute(particles.toArray(new Particle[0]));
+        
     }
 
     
@@ -188,25 +225,6 @@ public class ParticleSystem implements Iterable<Particle> {
         this.mBottomBoundStrat = mBottomBoundsStrat;
     }
 
-    private void onPassedBoundry(List<Particle> removeList, Particle p, BoundsStrategy strat){
-        switch(strat.atBoundery()){
-            case DIE:
-            {
-                //Log.i("PS", "Removing " + p + " from the system");
-                removeList.add(p);
-            }
-                break;
-            case REFLECT:
-            {
-                PointF vel = p.mVelocity;
-                //assume a simple reflection against a flat surface
-                //x stays the same, y flips.
-                vel.y = -vel.y;
-            }
-                break;
-        }
-    }
-    
     
     /**
      * @author Sean Mooney
@@ -297,4 +315,9 @@ public class ParticleSystem implements Iterable<Particle> {
     public Iterator<Particle> iterator() {
         return mParticles.listIterator();
     }
+    
+    public List<Particle> copyParticles(){
+        return new ArrayList<Particle>(mParticles);
+    }
+    
 }
