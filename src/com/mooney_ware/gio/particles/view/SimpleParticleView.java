@@ -20,11 +20,12 @@ package com.mooney_ware.gio.particles.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.PointF;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.mooney_ware.gio.R;
 import com.mooney_ware.gio.particles.model.ParticleSystem;
@@ -56,6 +57,7 @@ public class SimpleParticleView extends View{
     
     public void setSystem(ParticleSystem system){
         this.mSystem = system;
+        setSystemBounds();
     }
     
     @Override
@@ -64,12 +66,26 @@ public class SimpleParticleView extends View{
         if(mSystem == null) return;
         
         Drawable d = getResources().getDrawable(R.drawable.simpleparticle);
-        ImageView v = new ImageView(getContext());
-        v.setImageDrawable(d);
         
         for(Particle p : mSystem){
-            Log.i("ParticleView", "Drawing a particle at " + p.getLocation());
+            PointF loc = p.getLocation();
+            Log.i("ParticleView", "Drawing a particle at " + loc.x + "," + loc.y);
+            d.setBounds((int)loc.x, (int)loc.y, (int)loc.x + 5, (int)loc.y + 5);
             d.draw(canvas);
         }
+    }
+    
+    protected void setSystemBounds(){
+        if(mSystem!=null){
+            mSystem.setSystemBounds(new RectF(getLeft(), getTop(), getRight(), getBottom()));
+        }
+    }
+    
+    
+    
+    @Override
+    public void onSizeChanged(int w, int h, int ow, int oh){
+        super.onSizeChanged(w, h, ow, oh);
+        setSystemBounds();
     }
 }

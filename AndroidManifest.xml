@@ -12,7 +12,7 @@
         android:theme="@android:style/Theme.Light"
         android:label="@string/app_name">
         <activity
-            android:name=".GoogleIOCountdown"
+            android:name=".ParticleFountain"
             android:label="@string/app_name">
             <intent-filter>
                 <action

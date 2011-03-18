@@ -24,7 +24,9 @@ import java.util.List;
 
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 
 import com.mooney_ware.gio.particles.model.ParticleSystem.Particle;
 
@@ -42,6 +44,25 @@ public class ParticleSystem implements Iterable<Particle> {
 
     List<Particle> mParticles = new ArrayList<ParticleSystem.Particle>();
  
+    //step every 100 ms.
+    int timeToStep = 100;
+    
+    final Handler moveHandler = new Handler();
+    final Runnable moveRunner = new Runnable() {
+        @Override
+        public final void run() {
+            Log.i("PS", "Iterating particles");
+            stepAllParticles();
+            moveHandler.postDelayed(this, timeToStep);
+        }
+    };
+    
+    /**
+     * View that shows the particle system.
+     * Will be invalidated when the particles are all stepped.
+     */
+    View updateNotifaction;
+    
     /**
      * Add a new particle to the system.
      * @param size
@@ -55,6 +76,24 @@ public class ParticleSystem implements Iterable<Particle> {
 
     public void setSystemBounds(RectF systemBounds){
         mSystemBounds = systemBounds;
+    }
+
+    /**
+     * Start the system running.
+     * @param host view to invalidate after each step.
+     */
+    public void start(View host){
+        updateNotifaction = host;
+        moveHandler.post(moveRunner);
+    }
+    
+    /**
+     * Stop the system.
+     * 
+     */
+    public void stop(){
+        moveHandler.removeCallbacks(moveRunner);
+        updateNotifaction = null;
     }
     
     /**
@@ -71,23 +110,29 @@ public class ParticleSystem implements Iterable<Particle> {
         
         for(Particle p : particles){
             p.step(1);
-            if(sysBounds.left < p.getLeftBound()){
-                onIntersection(removeList, p, mLeftBoundStrat);
-            }else if(sysBounds.right > p.getRightBound()){
-                onIntersection(removeList, p, mRightBoundStrat);
-            }else if(sysBounds.top < p.getTopBound()){
-                onIntersection(removeList, p, mBoundsTopStrat);
-            }else if(sysBounds.bottom > p.getBottomBound()){
-                onIntersection(removeList, p, mBoundBottomStrat);
+            RectF pBounds = new RectF(p.getLeftBound(), p.getTopBound(), p.getRightBound(), p.getBottomBound());
+            if(sysBounds.left > pBounds.left){
+                onPassedBoundry(removeList, p, mLeftBoundStrat);
+            }else if(sysBounds.right < pBounds.right){
+                onPassedBoundry(removeList, p, mRightBoundStrat);
+            }else if(sysBounds.top > pBounds.top){
+                onPassedBoundry(removeList, p, mBoundsTopStrat);
+            }else if(sysBounds.bottom < pBounds.bottom){
+                onPassedBoundry(removeList, p, mBoundBottomStrat);
             }
         }
         mParticles.removeAll(removeList);
+        
+        if(updateNotifaction != null){
+            updateNotifaction.postInvalidate();
+        }
     }
 
-    private void onIntersection(List<Particle> removeList, Particle p, BoundsStrategy strat){
+    private void onPassedBoundry(List<Particle> removeList, Particle p, BoundsStrategy strat){
         switch(strat.atBoundery()){
             case DIE:
             {
+                Log.i("PS", "Removing " + p + " from the system");
                 removeList.add(p);
             }
                 break;
@@ -144,7 +189,12 @@ public class ParticleSystem implements Iterable<Particle> {
         }
 
         public void step(int dT){
-
+            PointF loc = mLocation;
+            PointF vel = mVelocity;
+            
+            loc.x += dT *vel.x;
+            loc.y += dT *vel.y;
+            
         }
     }
 
