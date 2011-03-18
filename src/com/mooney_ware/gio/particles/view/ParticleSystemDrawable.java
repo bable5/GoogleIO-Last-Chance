@@ -19,8 +19,8 @@
 package com.mooney_ware.gio.particles.view;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -38,7 +38,7 @@ public class ParticleSystemDrawable extends Drawable{
 
     private ParticleSystem mParticles;
     private Drawable mParticleImage;
-    private int mAlpha = Color.TRANSPARENT;
+    private int mAlpha = PixelFormat.OPAQUE;
     
     /* (non-Javadoc)
      * @see android.graphics.drawable.Drawable#draw(android.graphics.Canvas)
