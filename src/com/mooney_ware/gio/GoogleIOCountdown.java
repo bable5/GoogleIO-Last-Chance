@@ -28,7 +28,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.format.Time;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.mooney_ware.gio.model.CountDownDriver;
@@ -134,7 +133,7 @@ public class GoogleIOCountdown extends Activity  {
             
         };
         
-        View allDigits = findViewById(R.id.seconds_counter);
+        //View allDigits = findViewById(R.id.seconds_counter);
       
         //TODO: Fix yoffset and xoffset.
         float yOffset = 150;
