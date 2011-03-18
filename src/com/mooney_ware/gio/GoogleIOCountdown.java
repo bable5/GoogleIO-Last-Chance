@@ -78,8 +78,7 @@ public class GoogleIOCountdown extends Activity  {
     protected void  registerDigitChangeListeners(){
        class Listener implements DigitDisplay.SegmentLightListener{
            Random ayn = new Random();
-            float xChange = -1;
-            float mDx = 12;
+           
             
             float xAdj, yAdj;
             
@@ -101,9 +100,9 @@ public class GoogleIOCountdown extends Activity  {
                     int numToSpawn = ayn.nextInt(3) + 1;
                     for(int i = 0; i< numToSpawn; i++){
                         float dx = ayn.nextInt(40) - 20; 
-                        float dy = ayn.nextInt(40) - 20;
+                        float dy = 20 - ayn.nextInt(20);
                         
-                        int radius = (int)(bound.width());
+                        int radius = (int)(bound.width())/2;
                         if(radius < 2)
                             radius = 2;
 
@@ -162,14 +161,9 @@ public class GoogleIOCountdown extends Activity  {
         particleFountain = new Runnable() {
             @Override
             public void run() {
-                ps.addParticle(10, new PointF(100, 100), new PointF(1, 11));
                 particleHandler.postDelayed(this, 1000);
             }
         };
-        
-        
-        //particleHandler.postDelayed(particleRunner, 1000);
-        //particleHandler.postDelayed(particleFountain, 5000);
     }
     
     

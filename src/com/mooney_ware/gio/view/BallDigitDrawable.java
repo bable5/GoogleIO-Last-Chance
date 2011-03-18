@@ -19,7 +19,6 @@
 package com.mooney_ware.gio.view;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -55,6 +54,8 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
     
     private ArrayList<DigitDisplay.SegmentLightListener> segListener = new ArrayList<DigitDisplay.SegmentLightListener>();
     
+    
+    int mLastShapeMask = 0x00000000;
     
     public Paint getPaint(){
         Paint p = new Paint();
@@ -142,7 +143,10 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
         
         
         int consummableMask = SHAPE_DESC[value];
-
+        int changeMask = mLastShapeMask & ~consummableMask;
+        mLastShapeMask = consummableMask;
+        ArrayList<RectF> newPoints = new ArrayList<RectF>();
+        
         for(int h = 0; h < HEIGHT; h++){
             curX = xStart;
             for(int w = WIDTH - 1; w >= 0; w--){
@@ -158,24 +162,21 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
                 p.setColor(color);
                 canvas.drawCircle(curX, curY, radius, p);
 
+                int pointChanged = (changeMask & 0x00000001);
+                changeMask = (changeMask >>> 1);
+                if(pointChanged == 1){
+                    newPoints.add(new RectF(curX - radius, curY-radius, 
+                            curX + radius, curY + radius));
+                }
+                
                 consummableMask = (consummableMask >>> 1);
                 curX += xPad;
             }
             curY += yPad;
         }
         
-        if(valueChanged.get()){
-            Log.i("BallDigitDrawable", "Unexpected changed value " + value + " in draw ");
-        }
-        
-        //TODO: Is there still a risk of a lost update?
-        if(valueChanged.getAndSet(false)){
-            notifyDarkSements(Arrays.asList(new RectF( 
-                    bounds.left, 
-                    bounds.top, 
-                    bounds.left +radius, 
-                    bounds.top + radius ) 
-            ));
+        if(!newPoints.isEmpty()){
+            notifyDarkSements(newPoints);
         }
     }
 
