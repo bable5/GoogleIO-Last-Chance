@@ -189,4 +189,32 @@ public class LLTwoDigitDisplay extends LinearLayout implements DigitDisplay{
 //        }
 
     }
+
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.DigitDisplay#getIntrinsicWidth()
+     */
+    @Override
+    public int getIntrinsicWidth() {
+        int n = mNumPlaces;
+        BallDigitDrawable[] digits = mDigits;
+        int acc = 0;
+        for(int i = 0; i<n; i++){
+            acc+= digits[i].getIntrinsicWidth();
+        }
+        return acc;
+    }
+
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.DigitDisplay#getIntrinsicHeight()
+     */
+    @Override
+    public int getIntrinsicHeight() {
+        int n = mNumPlaces;
+        BallDigitDrawable[] digits = mDigits;
+        int acc = 0;
+        for(int i = 0; i<n; i++){
+            acc+= digits[i].getIntrinsicHeight();
+        }
+        return acc;
+    }
 }

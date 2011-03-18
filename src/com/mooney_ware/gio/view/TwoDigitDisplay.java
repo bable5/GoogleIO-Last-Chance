@@ -144,6 +144,24 @@ public class TwoDigitDisplay extends View implements DigitDisplay{
         }
     }
 
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.DigitDisplay#getIntrinsicWidth()
+     */
+    @Override
+    public int getIntrinsicWidth() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.DigitDisplay#getIntrinsicHeight()
+     */
+    @Override
+    public int getIntrinsicHeight() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
     
     
    

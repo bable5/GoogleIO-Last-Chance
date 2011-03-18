@@ -28,6 +28,8 @@ import android.graphics.RectF;
  */
 public interface DigitDisplay {
     public void setValue(int i);
+    public int getIntrinsicWidth();
+    public int getIntrinsicHeight();
     public void registerSegmentListener(SegmentLightListener listener); 
 
     public static interface SegmentLightListener{
