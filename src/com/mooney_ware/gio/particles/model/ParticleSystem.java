@@ -168,6 +168,14 @@ public class ParticleSystem implements Iterable<Particle> {
             mVelocity = velocity;
         }
 
+        public void setSize(float size){
+            mSize = size;
+        }
+        
+        public float getSize(){
+            return mSize;
+        }
+        
         public PointF getLocation(){
             return mLocation;
         }
