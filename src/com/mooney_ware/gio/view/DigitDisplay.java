@@ -31,10 +31,13 @@ public interface DigitDisplay {
     public void setValue(int i);
     public int getIntrinsicWidth();
     public int getIntrinsicHeight();
+    public int getWidth();
+    public int getHeight();
     public void registerSegmentListener(SegmentLightListener listener);
     public void setOnDrawable(Drawable d);
     public void setOffDrawable(Drawable d);
-
+    
+    
     public static interface SegmentLightListener{
         public void onSegmentLight(List<RectF> segmentBounds);
         public void onSegmentDark(List<RectF> segmentBounds);

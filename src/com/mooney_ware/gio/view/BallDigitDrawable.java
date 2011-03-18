@@ -120,12 +120,29 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
     public int getIntrinsicWidth() {
         return (CELLS_ACCROSS * mDiameter) + ( (CELLS_ACCROSS -1)  * dotPadding);
     }
+    
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.DigitDisplay#getWidth()
+     */
+    @Override
+    public int getWidth() {
+        return getIntrinsicWidth();
+    }
+
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.DigitDisplay#getHeight()
+     */
+    @Override
+    public int getHeight() {
+        return getIntrinsicHeight();
+    }
 
     /* (non-Javadoc)
      * @see android.graphics.drawable.Drawable#draw(android.graphics.Canvas)
      */
     @Override
     public void draw(Canvas canvas) {
+        
         
         
         final int WIDTH = CELLS_ACCROSS;
@@ -295,4 +312,6 @@ public class BallDigitDrawable extends Drawable implements DigitDisplay{
         0x0888888F, //7
         0x0F99F99F, //8
         0x0888F99F }; //9
+
+    
 }
