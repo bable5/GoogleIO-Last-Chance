@@ -57,5 +57,7 @@ public abstract class AbstractCountdownView extends View implements
 
         invalidate();
     }
-
+    
+    
+    
 }

@@ -133,4 +133,18 @@ public class TwoDigitDisplay extends View implements DigitDisplay{
         }
         invalidate();
     }
+
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.DigitDisplay#registerSegmentListenet(com.mooney_ware.gio.view.DigitDisplay.SegmentLightListener)
+     */
+    @Override
+    public void registerSegmentListener(SegmentLightListener listener) {
+        for(BallDigitDrawable bdd : mDigits){
+            bdd.registerSegmentListener(listener);
+        }
+    }
+
+    
+    
+   
 }

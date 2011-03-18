@@ -18,10 +18,21 @@
  */
 package com.mooney_ware.gio.view;
 
+import java.util.List;
+
+import android.graphics.RectF;
+
 /**
  * @author Sean Mooney
  *
  */
 public interface DigitDisplay {
     public void setValue(int i);
+    public void registerSegmentListener(SegmentLightListener listener); 
+
+    public static interface SegmentLightListener{
+        public void onSegmentLight(List<RectF> segmentBounds);
+        public void onSegmentDark(List<RectF> segmentBounds);
+    }
+
 }

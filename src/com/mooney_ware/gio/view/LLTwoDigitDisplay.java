@@ -34,7 +34,7 @@ public class LLTwoDigitDisplay extends LinearLayout implements DigitDisplay{
     int mNumPlaces;
     final int BASE = 10;
     int[] DIGIT_MASK;
-    
+     
     /**
      * @param context
      * @param attrs
@@ -94,5 +94,16 @@ public class LLTwoDigitDisplay extends LinearLayout implements DigitDisplay{
             digitDisp[i].setValue(placeValue);
         }
         invalidate();
+    }
+
+
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.DigitDisplay#registerSegmentListenet(com.mooney_ware.gio.view.DigitDisplay.SegmentLightListener)
+     */
+    @Override
+    public void registerSegmentListener(SegmentLightListener listener) {
+        for(BallDigitDrawable bdd : mDigits){
+            bdd.registerSegmentListener(listener);
+        }
     }
 }

@@ -18,11 +18,16 @@
  */
 package com.mooney_ware.gio.view;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
@@ -32,7 +37,7 @@ import com.mooney_ware.gio.GoogleIOCountdown;
  * @author Sean Mooney
  *
  */
-public class BallDigitDrawable extends Drawable{
+public class BallDigitDrawable extends Drawable implements DigitDisplay{
 
     private int mAlpha;
 
@@ -44,6 +49,8 @@ public class BallDigitDrawable extends Drawable{
     private int mRadius = 5;
     private int dotPadding = 2* mRadius + 2;
     private final Paint mPaint = getPaint();;
+    
+    private ArrayList<DigitDisplay.SegmentLightListener> segListener = new ArrayList<DigitDisplay.SegmentLightListener>();
     
     
     public Paint getPaint(){
@@ -57,6 +64,7 @@ public class BallDigitDrawable extends Drawable{
      * Set the value this display should display.
      * @param v
      */
+    @Override
     public void setValue(int v){
 
         if(value < 0 || value > 9){
@@ -64,6 +72,7 @@ public class BallDigitDrawable extends Drawable{
         }
 
         this.value = v;
+        this.invalidateSelf();
     }
 
     public void setBounds(Rect newBounds){
@@ -142,6 +151,14 @@ public class BallDigitDrawable extends Drawable{
             curY += yPad;
         }
 
+        
+        notifyDarkSements(Arrays.asList(new RectF( 
+                bounds.left, 
+                bounds.top, 
+                bounds.left +radius, 
+                bounds.top + radius ) 
+        ));
+        
     }
 
     /* (non-Javadoc)
@@ -169,6 +186,37 @@ public class BallDigitDrawable extends Drawable{
 
     }
 
+    public void notifyLitSegments(List<RectF> segmentBounds) {
+        synchronized(segListener){
+            for(SegmentLightListener sll : segListener){
+                //copy the list to prevent aliasing problems if 
+                //the reciever changes the list. Changes to the rectangles will be seen.
+                sll.onSegmentLight(new ArrayList<RectF>(segmentBounds));
+            }
+        }
+    }
+
+    
+    public void notifyDarkSements(List<RectF> segmentBounds) {
+        synchronized(segListener){
+            for(SegmentLightListener sll : segListener){
+                //copy the list to prevent aliasing problems if 
+                //the reciever changes the list. Changes to the rectangles will be seen.
+                sll.onSegmentDark(new ArrayList<RectF>(segmentBounds));
+            }
+        }
+    }
+    
+
+    /* (non-Javadoc)
+     * @see com.mooney_ware.gio.view.DigitDisplay#registerSegmentListenet(com.mooney_ware.gio.view.DigitDisplay.SegmentLightListener)
+     */
+    @Override
+    public void registerSegmentListener(SegmentLightListener listener) {
+        synchronized (segListener) {
+            segListener.add(listener);
+        }
+    }
 
 
     // Ints to describe how the number layout.
